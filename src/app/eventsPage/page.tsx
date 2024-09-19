@@ -1,6 +1,6 @@
-import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter'
-import { SearchBar } from '@/components/dropDownEvents/searchBar'
-import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter'
+import { ComboboxDemo } from '@/src/components/dropDownEvents/monthFilter'
+import { SearchBar } from '@/src/components/dropDownEvents/searchBar'
+import { ComboboxDemoYear } from '@/src/components/dropDownEvents/yearFilter'
 
 function EventsPage() {
   return (

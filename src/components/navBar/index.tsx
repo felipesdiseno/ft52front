@@ -49,7 +49,7 @@ function NavBar() {
             Donaciones
           </Link>
           <Link
-            href="/events"
+            href="/eventsPage"
             className="hover:cursor-pointer hover:bg-gray-200 font-bold text-blue-500 hover:text-blue-600 p-2 rounded-md transition duration-300 ease-in-out"
           >
             Eventos
