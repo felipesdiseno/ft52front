@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { signIn , useSession } from "next-auth/react";
 
 import { useState } from "react";
 import { validateLoginForm } from "./validateFormLogin";
@@ -11,6 +11,9 @@ import Link from "next/link";
 function LoginForm() {
   const [loginUser, setLoginUser] = useState<ILoginUser>({ email: "", password: "" });
   const [errors, setErrors] = useState<ILoginError>({});
+
+  const {data:session} = useSession();
+  console.log(session);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -24,9 +27,9 @@ function LoginForm() {
 
   const handleClickGoogle = async () => {
     try {
-      await signIn("google", { callbackUrl: "/home" });
+      await signIn("google", { callbackUrl: "/" });
       console.log("Iniciaste sesión con Google correctamente");
-
+      
       
     } catch (error) {
       console.error("Error al iniciar sesión con Google", error);

@@ -1,10 +1,9 @@
-import LoginForm from "../../components/loginForm/index"
+import LoginForm from '../../components/loginForm/index'
 
-function login () {
-    return (
+function login() {
 
-        < LoginForm/>
-    )
+
+  return <LoginForm />
 }
 
 export default login
