@@ -7,7 +7,7 @@ import { Label } from "@/src/components/ui/label";
 
 export function CustomCard() {
   return (
-    <Card className="w-[400px] mx-auto bg-slate-300">
+    <Card className="w-[400px] mx-auto ">
       <CardContent>
         <form>
           <div className="grid w-full items-start gap-4">
@@ -32,7 +32,10 @@ export function CustomCard() {
                 </div>
 
                 <div className="flex flex-col space-y-1.5 font-semibold">
-                  <Label htmlFor="location">Lugar::</Label>
+                  <Label htmlFor="location">Lugar:</Label>
+                </div>
+                <div className="flex flex-col space-y-1.5 font-semibold">
+                  <Label htmlFor="location">Costo:</Label>
                 </div>
               </div>
             </div>

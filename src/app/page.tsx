@@ -30,7 +30,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-8 text-center">Próximos Eventos</h2>
           <div className="flex justify-center gap-6 overflow-x-auto">
             {upcomingEvents.map((event) => (
-              <Card key={event.id} className="flex-shrink-0 w-[300px]">
+              <Card key={event.id} className="flex-shrink-0 ">
                 <CardHeader>
                   <CardTitle>{event.title}</CardTitle>
                   <CardDescription>
@@ -59,7 +59,7 @@ export default function Home() {
                 <CardFooter className="flex flex-row gap-x-4">
                   <HoverCard>
                     <HoverCardTrigger asChild>
-                    <Button variant="outline" className="w-1/2">Ver detalles</Button>
+                    <Button variant="outline" className="w-fit">Ver detalles</Button>
                     </HoverCardTrigger>
                     <HoverCardContent className="w-80">
                       <div className="flex justify-between space-x-4">
@@ -72,7 +72,7 @@ export default function Home() {
                       </div>
                     </HoverCardContent>
                   </HoverCard>
-                  <Button variant="outline" className="w-1/2">Consigue tu entrada</Button>
+                  <Button variant="outline" className="w-fit">Consigue tu entrada</Button>
                 </CardFooter>
               </Card>
             ))}
