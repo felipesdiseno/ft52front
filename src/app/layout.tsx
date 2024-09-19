@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Provider } from "../components/provider";
 import NavBar from "../components/navBar";
 import Footer from "../components/footer";
 
@@ -29,11 +30,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <NavBar />
-        <main className="flex flex-col min-h-screen">{children}</main>
-        <Footer />
+        ><NavBar/>
+        <Provider>
+        {children}
+        <Footer/>
+        </Provider>
       </body>
     </html>
-  );
+  )
 }
