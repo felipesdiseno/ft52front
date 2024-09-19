@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import { Check, ChevronsUpDown } from 'lucide-react'
+import * as React from 'react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 
-import { cn } from '@/lib/utils'
-import { Button } from '../ui/button'
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -12,12 +12,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/src/components/ui/command'
+} from '@/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/src/components/ui/popover'
+} from '@/components/ui/popover';
 
 const year = [
   {
@@ -28,11 +28,11 @@ const year = [
     value: '2025',
     label: '2025',
   },
-]
+];
 
 export function ComboboxDemoYear() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState('')
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState('');
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -60,8 +60,8 @@ export function ComboboxDemoYear() {
                   key={framework.value}
                   value={framework.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue)
-                    setOpen(false)
+                    setValue(currentValue === value ? '' : currentValue);
+                    setOpen(false);
                   }}
                 >
                   <Check
@@ -78,5 +78,5 @@ export function ComboboxDemoYear() {
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
