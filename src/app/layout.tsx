@@ -4,7 +4,7 @@ import './globals.css'
 import { Provider } from '../components/provider'
 import NavBar from '../components/navBar'
 import Footer from '../components/footer'
-
+import ShowComponent from '@/components/showComponents'
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -32,11 +32,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider>
-          <div className='flex flex-col min-h-screen'>
+          <ShowComponent>
             <NavBar />
-            <main className='flex-grow'>{children}</main>
-            <Footer />
-          </div>
+          </ShowComponent>
+          {children}
+          <Footer />
         </Provider>
       </body>
     </html>

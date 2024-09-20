@@ -10,19 +10,23 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, account }) {
+      // Si hay una cuenta, agregamos el accessToken y el providerAccountId al token
       if (account) {
-        console.log('JWT Callback:');
-        console.log('Token:', token);
-        console.log('Account:', account);
-        
-        (token as any).accessToken = account.access_token;
+        token.accessToken = account.access_token; // Agrega el accessToken
+        token.providerAccountId = account.providerAccountId; // Agrega el providerAccountId
       }
       return token;
     },
     async session({ session, token }) {
-    
-      (session as any).accessToken = (token as any).accessToken;
-      return session;
+      // Creamos un objeto personalizado con los datos de la sesión
+      const customSession = {
+        ...session,
+        accessToken: token?.accessToken, // Agrega el accessToken
+        providerAccountId: token?.providerAccountId, // Agrega el providerAccountId
+      };
+      
+      // Retornamos el objeto personalizado para enviar al backend
+      return customSession;
     }
   }
 });

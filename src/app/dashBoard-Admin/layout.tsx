@@ -50,7 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <ul className='mt-2 space-y-1 px-4'>
                   <li>
                     <Link
-                      href='/editEvent'
+                      href='dashBoard-Admin/events/editEvent'
                       className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
                     >
                       Crear y editar Eventos
@@ -59,7 +59,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
                   <li>
                     <Link
-                      href='/currentevents'
+                      href='dashboard-Admin/events/currentevents'
                       className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
                     >
                       Eventos vigentes
