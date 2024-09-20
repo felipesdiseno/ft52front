@@ -8,8 +8,8 @@ import { FaYoutube } from 'react-icons/fa'
 
 function Footer() {
   return (
-    <div className='w-full bg-blue-500'>
-      <div className=' container mx-auto flex flex-col lg:flex-row justify-between items-center p-2 lg:px-8 bg-blue-500 text-gray-200'>
+    <div className='w-full bg-blue-500 min-h-auto'>
+      <div className=' container mx-auto flex flex-col  lg:flex-row justify-between items-center p-2 lg:px-8 bg-blue-500 text-gray-200'>
         <div className='mb-4 lg:mb-0'>
           <div className='flex flex-row gap-1 items-center text-sm'>
             <h1>Copyright</h1>

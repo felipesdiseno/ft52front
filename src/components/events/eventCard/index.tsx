@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -7,20 +7,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { MapPin } from 'lucide-react';
+} from '@/components/ui/card'
+import { MapPin } from 'lucide-react'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from '@/components/ui/hover-card';
+} from '@/components/ui/hover-card'
 
 interface EventCardProps {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  imageUrl: string;
+  title: string
+  date: string
+  time: string
+  location: string
+  imageUrl: string
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -40,20 +40,20 @@ const EventCard: React.FC<EventCardProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className='flex justify-between items-start flex-col border'>
-          <div>
+        <div className=' justify-between items-center flexflex-col  justify-center'>
+          <div className=''>
             <p className='flex items-center text-muted-foreground mb-4'>
               <MapPin className='mr-2 h-4 w-4' />
               {location}
             </p>
           </div>
-          <div className='ml-4'>
+          <div className='ml-4 justify-center '>
             <Image
               src={imageUrl}
               alt={title}
-              width={80}
-              height={80}
-              className='rounded-md object-cover'
+              width={180}
+              height={180}
+              className='rounded-md object-cover mx-auto'
             />
           </div>
         </div>
@@ -61,7 +61,7 @@ const EventCard: React.FC<EventCardProps> = ({
       <CardFooter className='flex flex-row gap-x-4'>
         <HoverCard>
           <HoverCardTrigger asChild>
-            <Button variant='outline' className='w-fit'>
+            <Button className=' text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500'>
               Ver detalles
             </Button>
           </HoverCardTrigger>
@@ -76,12 +76,12 @@ const EventCard: React.FC<EventCardProps> = ({
             </div>
           </HoverCardContent>
         </HoverCard>
-        <Button variant='outline' className='w-fit'>
+        <Button className='bg-blue-500 hover:bg-blue-600'>
           Consigue tu entrada
         </Button>
       </CardFooter>
     </Card>
-  );
-};
+  )
+}
 
-export default EventCard;
+export default EventCard

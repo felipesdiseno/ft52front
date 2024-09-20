@@ -1,22 +1,22 @@
-import React from 'react';
+import React from 'react'
 import {
   Card,
   CardTitle,
   CardContent,
   CardFooter,
   CardDescription,
-} from '@/components/ui/card';
-import Image from 'next/image';
+} from '@/components/ui/card'
+import Image from 'next/image'
 
 type featuredEventProps = {
-  imgSrc: string;
-  description: string;
-  title: string;
-};
+  imgSrc: string
+  description: string
+  title: string
+}
 
 function FeaturedEventCard({ imgSrc, description, title }: featuredEventProps) {
   return (
-    <Card className='w-1/2 max-w-[350px]'>
+    <Card className='w-1/2 max-w-[350px] shadow-lg'>
       <CardContent className='pt-6  '>
         <CardTitle className='mb-4'>{title}</CardTitle>
         <div className='relative aspect-[16/9] w-full '>
@@ -29,7 +29,7 @@ function FeaturedEventCard({ imgSrc, description, title }: featuredEventProps) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default FeaturedEventCard;
+export default FeaturedEventCard
