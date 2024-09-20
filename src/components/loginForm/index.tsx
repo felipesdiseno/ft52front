@@ -1,25 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { signIn , useSession } from "next-auth/react";
-
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { validateLoginForm } from "./validateFormLogin";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import handleUserAuthentication from "./auth.helper";
+import { Session } from "next-auth";
+
+// Extender el tipo Session para incluir accessToken y providerAccountId
+interface CustomSession extends Session {
+  accessToken?: string;
+  providerAccountId?: string;
+}
 
 function LoginForm() {
   const [loginUser, setLoginUser] = useState<ILoginUser>({ email: "", password: "" });
   const [errors, setErrors] = useState<ILoginError>({});
 
-  const {data:session} = useSession();
-  console.log(session);
+  const { data: session } = useSession() as { data: CustomSession | null };
+  console.log("Sesión actual:", session);
+
+  useEffect(() => {
+    // Si la sesión es válida, enviamos los datos al backend
+    if (session) {
+      console.log("Sesión detectada:", session);
+      handleUserAuthentication(session);
+    }
+  }, [session]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const validationErrors = validateLoginForm(loginUser);
     if (Object.keys(validationErrors).length === 0) {
       console.log("Formulario válido. Enviando datos...");
+      // Aquí puedes manejar el inicio de sesión con email y password
     } else {
       setErrors(validationErrors);
     }
@@ -27,15 +43,44 @@ function LoginForm() {
 
   const handleClickGoogle = async () => {
     try {
-      await signIn("google", { callbackUrl: "/" });
-      console.log("Iniciaste sesión con Google correctamente");
-      
-      
+      // Inicia sesión con Google sin redirigir de inmediato
+      const response = await signIn("google", { redirect: false });
+
+      console.log("Respuesta de signIn:", response);
+
+      // Verifica si la sesión ya contiene la información del usuario
+      if (session) {
+        const userData = {
+          providerAccountId: session?.providerAccountId, // ID del proveedor de Google
+          email: session?.user?.email,
+          name: session?.user?.name,
+        };
+
+        console.log("Datos del usuario autenticado con Google:", userData);
+
+        // Aquí puedes enviar los datos al backend usando fetch
+        const backendResponse = await fetch("/api/auth/google", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+
+        const backendData = await backendResponse.json();
+
+        console.log("Respuesta del backend:", backendData);
+
+        if (backendResponse.ok) {
+          console.log("Usuario registrado/iniciado sesión en el backend correctamente");
+        } else {
+          console.log("Error al registrar/iniciar sesión en el backend");
+        }
+      }
     } catch (error) {
       console.error("Error al iniciar sesión con Google", error);
     }
   };
-
 
   return (
     <section className="bg-white">
@@ -83,9 +128,7 @@ function LoginForm() {
                   name="email"
                   value={loginUser.email}
                   onChange={(e) => setLoginUser({ ...loginUser, email: e.target.value })}
-                  className={`mt-1 w-full p-4 border ${
-                    errors.email ? "border-red-500" : "border-gray-200"
-                  } bg-white text-sm text-gray-700 shadow-sm`}
+                  className={`mt-1 w-full p-4 border ${errors.email ? "border-red-500" : "border-gray-200"} bg-white text-sm text-gray-700 shadow-sm`}
                 />
                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
@@ -103,9 +146,7 @@ function LoginForm() {
                   name="password"
                   value={loginUser.password}
                   onChange={(e) => setLoginUser({ ...loginUser, password: e.target.value })}
-                  className={`mt-1 w-full p-4 border ${
-                    errors.password ? "border-red-500" : "border-gray-200"
-                  } bg-white text-sm text-gray-700 shadow-sm`}
+                  className={`mt-1 w-full p-4 border ${errors.password ? "border-red-500" : "border-gray-200"} bg-white text-sm text-gray-700 shadow-sm`}
                 />
                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
               </div>
@@ -120,8 +161,7 @@ function LoginForm() {
 
                 <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                   No tienes una cuenta? Puedes registrarte{" "}
-                  <Link href={"/register"} className="text-gray-950">Aqui</Link>
-                  .
+                  <Link href={"/register"} className="text-gray-950">Aqui</Link>.
                 </p>
               </div>
             </form>
@@ -136,7 +176,6 @@ function LoginForm() {
                 Continuar con Google
               </span>
             </button>
-
           </div>
         </main>
       </div>
