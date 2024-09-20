@@ -1,4 +1,4 @@
-import InputEventAd from '@/src/components/inputEventAdministrator'
+import InputEventAd from '@/components/inputEventAdministrator'
 import React from 'react'
 
 function FelipeTestPage() {

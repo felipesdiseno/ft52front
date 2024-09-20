@@ -1,7 +1,7 @@
-import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter';
-import { SearchBar } from '@/components/dropDownEvents/searchBar';
-import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter';
-import EventsList from '@/components/events/eventsList';
+import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter'
+import { SearchBar } from '@/components/dropDownEvents/searchBar'
+import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter'
+import EventsList from '@/components/events/eventsList'
 
 function EventsPage() {
   const upcomingEvents = [
@@ -29,19 +29,25 @@ function EventsPage() {
       location: 'Plaza',
       imageUrl: '/placeholder.svg',
     },
-  ];
+  ]
   return (
     <div className='w-full'>
-      <div className='container mx-auto flex flex-col '>
-        <h1 className='text-3xl mt-4'>Participa de nuestros eventos:</h1>
+      <div className='container mx-auto flex flex-col mt-4 '>
+        <h1 className='text-3xl mt-4 font-bold'>
+          Participa de nuestros eventos:
+        </h1>
         <div className='flex flex-row gap-2  justify-start mt-4'>
-          <ComboboxDemo />
-          <ComboboxDemoYear />
-          <SearchBar />
+          <div className='flex flex-row gap-6 '>
+            <ComboboxDemo />
+            <ComboboxDemoYear />
+            <SearchBar />
+          </div>
+        </div>
+        <div className='mt-4 mb-6'>
           <EventsList events={upcomingEvents} />
         </div>
       </div>
     </div>
-  );
+  )
 }
-export default EventsPage;
+export default EventsPage
