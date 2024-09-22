@@ -1,26 +1,33 @@
+const API_URL_USER_POST = process.env.NEXT_PUBLIC_API_URL_POST_USER_AUT;
 
-const handleUserAuthentication = (session: CustomSession) => {
-  // Aquí realizas la lógica para enviar los datos al backend
-  const userData = {
-    providerAccountId: session.providerAccountId,
-    email: session.user?.email,
-    name: session.user?.name,
-    accessToken: session.accessToken,
-  };
+interface IUserObject {
+  providerAccountId: string;
+  email: string;
+  name: string;
+  accessToken: string;
+  image: string;
+}
 
-  console.log("Datos del usuario para el backend:", userData);
-  
-  // Aquí puedes realizar la petición a tu backend
-  fetch("/api/your-backend-endpoint", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  })
-    .then(response => response.json())
-    .then(data => console.log("Respuesta del backend:", data))
-    .catch(error => console.error("Error al enviar los datos al backend:", error));
+export const postUserSessionData = async (userObject: IUserObject) => {
+  try {
+    const response = await fetch("http://localhost:3003/auth/auth0/signup", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userObject),
+    });
+
+    // Asegúrate de manejar la respuesta correctamente
+    if (!response.ok) {
+      throw new Error('Error en la respuesta del servidor');
+    }
+
+    const data = await response.json(); // Obtén los datos de la respuesta
+    console.log('Datos enviados exitosamente al backend.', data);
+    return data; // Retorna los datos del backend
+  } catch (error) {
+    console.error('Error al enviar los datos al backend:', error);
+    throw error; // Lanza el error para que se maneje en el componente
+  }
 };
-
-export default handleUserAuthentication;

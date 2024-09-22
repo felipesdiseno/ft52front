@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,9 +18,16 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@ui/*": ["src/ui/*"],
-      "typeRoots": ["./types", "./node_modules/@types"]
+      "@/*": [
+        "src/*"
+      ],
+      "@ui/*": [
+        "src/ui/*"
+      ],
+      "typeRoots": [
+        "./types",
+        "./node_modules/@types"
+      ]
     },
     "plugins": [
       {
@@ -24,6 +35,14 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "config/plugins.js","types"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/types/**/*.d.ts",
+    ".next/types/**/*.ts"
+, "src/app/api/auth/[...nextauth]/route.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

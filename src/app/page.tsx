@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 // import { ButtonIcon } from '@radix-ui/react-icons'
 import EventsList from '../components/events/eventsList'
 import FeaturedEventCard from '../components/events/featuredEventCard'
@@ -7,6 +8,8 @@ import FeaturedEventCard from '../components/events/featuredEventCard'
 import { Calendar } from 'lucide-react'
 // import { useState } from 'react'
 import Link from 'next/link'
+import { SessionProvider, useSession } from 'next-auth/react'
+import { postUserSessionData } from '@/components/loginForm/auth.helper'
 const upcomingEvents = [
   {
     id: 1,
@@ -69,10 +72,15 @@ const featuredEvents = [
   },
 ]
 
+
+
 export default function Home() {
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
+  
+  
+
 
   return (
     <div className='w-full'>
