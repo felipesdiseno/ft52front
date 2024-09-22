@@ -14,6 +14,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import { Switch } from '@/components/ui/switch'
 
 interface EventCardProps {
   title: string
@@ -33,21 +34,36 @@ const EventCard: React.FC<EventCardProps> = ({
   return (
     <Card className='flex-shrink-0'>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <div className='flex justify-between items-center'>
+          <CardTitle>{title}</CardTitle>
+
+          <div className='flex items-center'>
+            <span className='text-sm mr-2'>Destacar</span>
+            <Switch
+              id='highlight-event'
+              className='text-blue-600'
+              onCheckedChange={(checked) => {
+                console.log(
+                  checked ? 'Evento destacado' : 'Evento no destacado',
+                )
+              }}
+            />
+          </div>
+        </div>
         <CardDescription>
           <time dateTime={date}>{new Date(date).toLocaleDateString()}</time> a
           las {time}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className=' justify-between items-center flexflex-col  justify-center'>
-          <div className=''>
+        <div className='justify-between items-center flex flex-col'>
+          <div>
             <p className='flex items-center text-muted-foreground mb-4'>
               <MapPin className='mr-2 h-4 w-4' />
               {location}
             </p>
           </div>
-          <div className='ml-4 justify-center '>
+          <div className='ml-4 justify-center'>
             <Image
               src={imageUrl}
               alt={title}
@@ -61,7 +77,7 @@ const EventCard: React.FC<EventCardProps> = ({
       <CardFooter className='flex flex-row gap-x-4'>
         <HoverCard>
           <HoverCardTrigger asChild>
-            <Button className=' text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500'>
+            <Button className='text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500'>
               Ver detalles
             </Button>
           </HoverCardTrigger>
@@ -83,5 +99,4 @@ const EventCard: React.FC<EventCardProps> = ({
     </Card>
   )
 }
-
 export default EventCard
