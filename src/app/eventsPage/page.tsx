@@ -20,9 +20,9 @@ function EventsPage() {
     setEvents(data.events);
   }
   useEffect(()=> {
-    if (!events) {getEvents();}
+    if(events.length === 0){getEvents()}
     console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
-  }),[events]
+  }),[events];
 
   return (
     <div className='w-full bg-red-500 h-[100vh]'>

@@ -11,37 +11,8 @@ import Link from 'next/link'
 import { SessionProvider, useSession } from 'next-auth/react'
 import { postUserSessionData } from '@/components/loginForm/auth.helper'
 import { useAuth } from '@/context/AuthContext'
+import { set } from 'date-fns'
 
-
-const upcomingEvents = [
-  {
-    id: 1,
-    title: 'Primer reunión',
-    date: '2024-09-24',
-    time: '10:00 AM',
-    location: 'Centro',
-    imageUrl:
-      'https://res.cloudinary.com/dljtn9f2o/image/upload/v1726839850/fzg3xuuz0igtzutqzyd1.jpg',
-  },
-  {
-    id: 2,
-    title: 'Segunda reunión',
-    date: '2024-10-02',
-    time: '7:00 PM',
-    location: 'Sala de conferencias',
-    imageUrl:
-      'https://res.cloudinary.com/dljtn9f2o/image/upload/v1726839850/fzg3xuuz0igtzutqzyd1.jpg',
-  },
-  {
-    id: 3,
-    title: 'Tercera reunión',
-    date: '2024-10-10',
-    time: '2:00 PM',
-    location: 'Plaza',
-    imageUrl:
-      'https://res.cloudinary.com/dljtn9f2o/image/upload/v1726839850/fzg3xuuz0igtzutqzyd1.jpg',
-  },
-]
 const featuredEvents = [
   {
     title: '50 años',
@@ -90,17 +61,18 @@ export default function Home() {
     }
     const data = await response.json();
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',data);
-    setEvents(data.events);
+    setEvents(data.events)
+    return;
   }
   useEffect(()=> {
     console.log('USE EFFECT EN HOME "/"', {TOKEN:token, session});
-    if(!events){getEvents();}
+    if(events.length === 0){getEvents()}
     console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
-  }),[token, session, events]
+  }),[token, session, events];
 
 
   return (
-    <div className='w-full'>
+    <div className='w-full' >
       <div className=' container flex flex-col '>
         <h2 className='text-3xl font-bold text-gray-500 mb-8 items-start mt-4'>
           Próximos Eventos

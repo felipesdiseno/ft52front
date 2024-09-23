@@ -36,24 +36,28 @@ function NavBar() {
 
         <div className='hidden lg:flex flex-row gap-2 items-center'>
           <Link
+            onClick={() =>setDropDownMenu(false)}
             href='/'
             className='hover:cursor-pointer hover:bg-gray-200 font-bold text-blue-500 hover:text-blue-600 p-2 rounded-md transition duration-300 ease-in-out'
           >
             Inicio
           </Link>
           <Link
+            onClick={() =>setDropDownMenu(false)}
             href='/aboutUs'
             className='hover:cursor-pointer hover:bg-gray-200 font-bold text-blue-500 hover:text-blue-600 p-2 rounded-md transition duration-300 ease-in-out'
           >
             Nuestra comunidad
           </Link>
           <Link
+            onClick={() =>setDropDownMenu(false)}
             href='/donations'
             className='hover:cursor-pointer hover:bg-gray-200 font-bold text-blue-500 hover:text-blue-600 p-2 rounded-md transition duration-300 ease-in-out'
           >
             Donaciones
           </Link>
           <Link
+            onClick={() =>setDropDownMenu(false)}
             href='/eventsPage'
             className='hover:cursor-pointer hover:bg-gray-200 font-bold text-blue-500 hover:text-blue-600 p-2 rounded-md transition duration-300 ease-in-out'
           >
@@ -62,7 +66,7 @@ function NavBar() {
           <div className='relative'>
             {(session?.image && (
               <Avatar className='hover:cursor-pointer'>
-                <AvatarImage src={session?.image} onClick={handleDropDownMenu} />
+                <AvatarImage src={session?.image} onClick={handleDropDownMenu} onMouseEnter={()=>setDropDownMenu(true)} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             )) || (
@@ -73,7 +77,7 @@ function NavBar() {
               />
             )}
 
-            {dropDownMenu && <DropDownMenu />}
+            {dropDownMenu && <div onMouseLeave={()=>setDropDownMenu(false)}><DropDownMenu /></div>}
           </div>
         </div>
         <div className='lg:hidden'>
