@@ -1,9 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DatePickerDemo } from './datePicker';
 import { Input } from '@/components/ui/input';
 import { InputFile } from './inputFile';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
+
+
 
 function InputEventAd() {
   const [eventName, setEventName] = useState('');
@@ -11,6 +14,19 @@ function InputEventAd() {
   const [eventLocation, setEventLocation] = useState('');
   const [eventOrganizer, setEventOrganizer] = useState('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
+  //const[token, setToken] = useState("")
+  //const[user, setUser] = useState({})
+  const { token, session } = useAuth();
+  /*useEffect(() => {
+
+    const {token , session}= useAuth()
+    if(session&&token){
+      setToken(token)
+      setUser(session)
+    }
+
+    
+  }, [token]);*/
 
   const handleSubmit = async () => {
     console.log('Nombre del evento:', eventName);
@@ -18,16 +34,14 @@ function InputEventAd() {
     console.log('Ubicación del evento:', eventLocation);
     console.log('Organizador del evento:', eventOrganizer);
     console.log('URL de la imagen:', imgUrl);
-    if (
-      !eventName ||
-      !eventDate ||
-      !eventLocation ||
-      !eventOrganizer ||
-      !imgUrl
-    ) {
-      console.error('Todos los campos son obligatorios');
+    
+   const creatorId= session?.creatorId
+
+    if (!eventName || !eventDate || !eventLocation || !eventOrganizer || !imgUrl || !token || !creatorId) {
+      console.error('Todos los campos son obligatorios y se requiere autenticación.');
       return;
     }
+    
 
     const eventData = {
       name: eventName,
@@ -35,16 +49,19 @@ function InputEventAd() {
       location: eventLocation,
       organizer: eventOrganizer,
       imageUrl: imgUrl,
+      creatorId: creatorId,
     };
-    console.log('Datos a enviar:', eventData);
+
     try {
       const response = await fetch('https://your-backend-url.com/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Token de autenticación en la cabecera
         },
         body: JSON.stringify(eventData),
       });
+
       console.log('Respuesta del servidor:', response);
       if (response.ok) {
         console.log('Evento creado exitosamente');

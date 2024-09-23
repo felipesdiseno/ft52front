@@ -10,6 +10,9 @@ import { Calendar } from 'lucide-react'
 import Link from 'next/link'
 import { SessionProvider, useSession } from 'next-auth/react'
 import { postUserSessionData } from '@/components/loginForm/auth.helper'
+import { useAuth } from '@/context/AuthContext'
+
+
 const upcomingEvents = [
   {
     id: 1,
@@ -73,13 +76,16 @@ const featuredEvents = [
 ]
 
 
-
 export default function Home() {
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
-  
-  
+  const { token, session, setToken, setSession } = useAuth();
+  useEffect(()=> {
+    setToken(token)
+    setSession(session)
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', token, session)
+  }),[token, session]
 
 
   return (

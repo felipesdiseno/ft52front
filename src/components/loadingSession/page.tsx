@@ -5,6 +5,9 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { postUserSessionData } from '../loginForm/auth.helper'
 
+
+
+
 function LoadingSessionComponent() {
   const router = useRouter()
   const { data: session, status } = useSession()

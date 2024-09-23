@@ -1,3 +1,9 @@
+'use client'
+
+import { useAuth } from "@/context/AuthContext";
+
+
+
 const API_URL_USER_POST = process.env.NEXT_PUBLIC_API_URL_POST_USER_AUT;
 
 interface IUserObject {
@@ -8,6 +14,7 @@ interface IUserObject {
   image: string;
 }
 
+const {setToken , setSession}=useAuth();
 export const postUserSessionData = async (userObject: IUserObject) => {
   try {
     const response = await fetch("http://localhost:3003/auth/auth0/signup", {
@@ -25,6 +32,8 @@ export const postUserSessionData = async (userObject: IUserObject) => {
 
     const data = await response.json(); // Obtén los datos de la respuesta
     console.log('Datos enviados exitosamente al backend.', data);
+    setToken(data.token);
+    setSession(data.user);
     return data; // Retorna los datos del backend
   } catch (error) {
     console.error('Error al enviar los datos al backend:', error);
