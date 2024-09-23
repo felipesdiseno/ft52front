@@ -10,6 +10,7 @@ function InputEventAd() {
   const [eventDate, setEventDate] = useState('');
   const [eventLocation, setEventLocation] = useState('');
   const [eventOrganizer, setEventOrganizer] = useState('');
+  const [creatorId, setCreatorId] = useState('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
 
   const handleSubmit = async () => {
@@ -35,6 +36,7 @@ function InputEventAd() {
       location: eventLocation,
       organizer: eventOrganizer,
       imageUrl: imgUrl,
+      creatorId: creatorId,
     };
     console.log('Datos a enviar:', eventData);
     try {
@@ -57,45 +59,45 @@ function InputEventAd() {
   };
 
   return (
-    <div className=''>
-      <div className='p-2 space-y-2'>
-        <h1 className='font-bold text-[28px] text-gray-500 mb-4'>
+    <div className="">
+      <div className="p-2 space-y-2">
+        <h1 className="font-bold text-[28px] text-gray-500 mb-4">
           Crear evento:
         </h1>
-        <div className='flex flex-row gap-2'>
+        <div className="flex flex-row gap-2">
           <Input
-            type='text'
-            placeholder='Nombre del evento'
-            className='w-auto bg-white'
+            type="text"
+            placeholder="Nombre del evento"
+            className="w-auto bg-white"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
           />
           <DatePickerDemo onChange={(date: string) => setEventDate(date)} />
         </div>
-        <div className='flex flex-row gap-2'>
+        <div className="flex flex-row gap-2">
           <Input
-            type='text'
-            placeholder='Ubicación'
-            className='w-auto bg-white'
+            type="text"
+            placeholder="Ubicación"
+            className="w-auto bg-white"
             value={eventLocation}
             onChange={(e) => setEventLocation(e.target.value)}
           />
           <Input
-            type='text'
-            placeholder='Organizador'
-            className='w-[280px] bg-white'
+            type="text"
+            placeholder="Organizador"
+            className="w-[280px] bg-white"
             value={eventOrganizer}
             onChange={(e) => setEventOrganizer(e.target.value)}
           />
         </div>
         <InputFile onImageUpload={setImgUrl} />
       </div>
-      <div className='flex justify-end gap-2'>
-        <Button className='bg-transparent text-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:text-white'>
+      <div className="flex justify-end gap-2">
+        <Button className="bg-transparent text-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:text-white">
           Cancelar
         </Button>
         <Button
-          className='bg-blue-500 hover:bg-blue-600'
+          className="bg-blue-500 hover:bg-blue-600"
           onClick={handleSubmit}
         >
           Crear Evento

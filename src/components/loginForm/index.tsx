@@ -1,12 +1,11 @@
 'use client'
 
-import { signIn, useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { useState } from 'react'
 import { validateLoginForm } from './validateFormLogin'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
 import Image from 'next/image'
-import { postUserSessionData } from './auth.helper'
 
 // Interfaces para tipar los datos del usuario y los errores de validación
 interface ILoginUser {
@@ -28,7 +27,7 @@ function LoginForm() {
   const [errors, setErrors] = useState<ILoginError>({})
 
   // Obtiene la sesión actual
-  const { data: session, status } = useSession()
+  // const { data: session, status } = useSession()
 
   // Efecto para manejar la sesión autenticada
   /*useEffect(() => {
@@ -72,16 +71,14 @@ function LoginForm() {
   // Maneja el clic en el botón de Google
   const handleClickGoogle = async () => {
     try {
-      await signIn('google', { callbackUrl: '/LoadingSession' }) // Redirige al home después de autenticarse
+      await signIn('google', { callbackUrl: '/loadingSession' }) // Redirige al home después de autenticarse
     } catch (error) {
       console.error('Error en signIn con Google', error)
     }
   }
 
-
-
   return (
-    <section className='bg-white'>
+    <section className='bg-white mb-10'>
       <div className='lg:grid lg:min-h-screen lg:grid-cols-12'>
         <aside className='relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6'>
           <Image
@@ -109,7 +106,8 @@ function LoginForm() {
               </h1>
             </div>
             <p className='mt-4 leading-relaxed text-gray-700 sm:text-2xl md:text-2xl'>
-              "Reconociéndonos testigos, ofrecemos nuestros dones a la iglesia".
+              &quot; Reconociéndonos testigos, ofrecemos nuestros dones a la
+              iglesia. &quot;
             </p>
 
             <form
@@ -138,7 +136,7 @@ function LoginForm() {
                 )}
               </div>
 
-              <div className='col-span-6'>
+              <div className='col-span-6 '>
                 <label
                   htmlFor='Password'
                   className='block text-sm font-medium text-gray-700'
@@ -153,41 +151,45 @@ function LoginForm() {
                   onChange={(e) =>
                     setLoginUser({ ...loginUser, password: e.target.value })
                   }
-                  className={`mt-1 w-full p-4 border ${errors.password ? 'border-red-500' : 'border-gray-200'} bg-white text-sm text-gray-700 shadow-sm`}
+                  className={`mt-1 w-full p-4 border ${errors.password ? 'border-red-500' : 'border-gray-200'} bg-white text-sm text-gray-700 shadow-sm mb-4`}
                 />
+
                 {errors.password && (
-                  <p className='text-red-500 text-sm'>{errors.password}</p>
+                  <div className='bg-blue-700'>
+                    <p className='text-red-500 text-sm mt-1 bg-green-300'>
+                      {errors.password}
+                    </p>
+                  </div>
                 )}
               </div>
-
-              <div className='col-span-6 sm:flex sm:items-center sm:gap-4'>
+            </form>
+            <div className='flex flex-col items-center gap-4 2-full'>
+              <div className='flex flex-row items-center gap-4 justify-center w-full mt-10'>
                 <button
                   type='submit'
-                  className='inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500'
+                  className='inline-block  rounded-md border border-blue-600 bg-blue-600 px-2 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 w-full max-w-xs'
                 >
                   Ingresar
                 </button>
-
-                <p className='mt-4 text-sm text-gray-500 sm:mt-0'>
-                  No tienes una cuenta? Puedes registrarte{' '}
-                  <Link href={'/register'} className='text-gray-950'>
-                    Aquí
-                  </Link>
-                  .
-                </p>
+                <button
+                  onClick={handleClickGoogle}
+                  type='button'
+                  className='flex items-center justify-center w-full max-w-xs px-2 py-3 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:border-blue-600 transition duration-300 ease-in-out'
+                >
+                  <FcGoogle className='w-6 h-6' />
+                  <span className='ml-3 text-sm font-medium text-gray-700'>
+                    Continuar con Google
+                  </span>
+                </button>
               </div>
-            </form>
-
-            <button
-              onClick={handleClickGoogle}
-              type='button'
-              className='flex items-center justify-center w-full max-w-xs mx-auto mt-6 px-6 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:border-blue-600 transition duration-300 ease-in-out'
-            >
-              <FcGoogle className='w-6 h-6' />
-              <span className='ml-3 text-sm font-medium text-gray-700'>
-                Continuar con Google
-              </span>
-            </button>
+              <p className='mt-6 text-sm text-gray-500 sm:mt-0'>
+                No tienes una cuenta? Puedes registrarte{' '}
+                <Link href={'/register'} className='text-gray-950'>
+                  Aquí
+                </Link>
+                .
+              </p>
+            </div>
           </div>
         </main>
       </div>

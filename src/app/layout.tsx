@@ -5,6 +5,7 @@ import { Provider } from '../components/provider'
 import NavBar from '../components/navBar'
 import Footer from '../components/footer'
 import ShowComponent from '@/components/showComponents'
+
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',

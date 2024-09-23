@@ -7,9 +7,12 @@ const ShowComponent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   return (
     <div>
-      {pathname !== "/login" && pathname !== "/register" && pathname !== "/dashBoard-Admin" ? (
+      {pathname.includes("dashBoard-Admin") ||
+      pathname.includes("login") ||
+      pathname.includes("register") ||
+      pathname.includes("loadingSession") ? null : (
         <div>{children}</div>
-      ) : null}
+      )}
     </div>
   );
 };
