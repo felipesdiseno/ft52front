@@ -14,29 +14,39 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import { create } from 'domain'
 
 interface EventCardProps {
-  title: string
-  date: string
-  time: string
-  location: string
-  imageUrl: string
+    key: string
+    highlight: boolean
+    createDate: Date
+    status: string
+    title: string
+    eventDate: Date
+    eventLocation: string
+    price: number
+    stock: number
+    image: string
 }
 
 const EventCard: React.FC<EventCardProps> = ({
+  key,
+  highlight,
+  createDate,
+  status,
   title,
-  date,
-  time,
-  location,
-  imageUrl,
-}) => {
+  eventDate,
+  eventLocation,
+  price,
+  stock,
+  image}
+) => {
   return (
     <Card className='flex-shrink-0'>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>
-          <time dateTime={date}>{new Date(date).toLocaleDateString()}</time> a
-          las {time}
+          <time>{new Date(eventDate).toLocaleDateString()}</time>
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -44,12 +54,12 @@ const EventCard: React.FC<EventCardProps> = ({
           <div className=''>
             <p className='flex items-center text-muted-foreground mb-4'>
               <MapPin className='mr-2 h-4 w-4' />
-              {location}
+              {eventLocation}
             </p>
           </div>
           <div className='ml-4 justify-center '>
             <Image
-              src={imageUrl}
+              src={image}
               alt={title}
               width={180}
               height={180}

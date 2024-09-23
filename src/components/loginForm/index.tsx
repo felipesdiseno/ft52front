@@ -72,7 +72,7 @@ function LoginForm() {
   // Maneja el clic en el botón de Google
   const handleClickGoogle = async () => {
     try {
-      await signIn('google', { callbackUrl: '/LoadingSession' }) // Redirige al home después de autenticarse
+      await signIn('google', { callbackUrl: '/loadingsession' }) // Redirige al home después de autenticarse
     } catch (error) {
       console.error('Error en signIn con Google', error)
     }

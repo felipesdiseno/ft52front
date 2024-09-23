@@ -15,9 +15,10 @@ interface IUserObject {
 }
 
 const {setToken , setSession}=useAuth();
+
 export const postUserSessionData = async (userObject: IUserObject) => {
   try {
-    const response = await fetch("http://localhost:3003/auth/auth0/signup", {
+    const response = await fetch('http://localhost:3003/auth/auth0/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,18 +26,17 @@ export const postUserSessionData = async (userObject: IUserObject) => {
       body: JSON.stringify(userObject),
     });
 
-    // Asegúrate de manejar la respuesta correctamente
     if (!response.ok) {
       throw new Error('Error en la respuesta del servidor');
     }
 
-    const data = await response.json(); // Obtén los datos de la respuesta
+    const data = await response.json();
     console.log('Datos enviados exitosamente al backend.', data);
     setToken(data.token);
     setSession(data.user);
-    return data; // Retorna los datos del backend
+    return data; 
   } catch (error) {
     console.error('Error al enviar los datos al backend:', error);
-    throw error; // Lanza el error para que se maneje en el componente
+    throw error;
   }
 };

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 // import { ButtonIcon } from '@radix-ui/react-icons'
 import EventsList from '../components/events/eventsList'
 import FeaturedEventCard from '../components/events/featuredEventCard'
@@ -80,12 +80,23 @@ export default function Home() {
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
-  const { token, session, setToken, setSession } = useAuth();
+  const [events , setEvents] = useState([]);
+  const { token, session } = useAuth();
+
+  const getEvents = async () => {
+    const response = await fetch('http://localhost:3003/events');
+    if (!response.ok) {
+      throw new Error('Error fetching events');
+    }
+    const data = await response.json();
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',data);
+    setEvents(data.events);
+  }
   useEffect(()=> {
-    setToken(token)
-    setSession(session)
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', token, session)
-  }),[token, session]
+    console.log('USE EFFECT EN HOME "/"', {TOKEN:token, session});
+    if(!events){getEvents();}
+    console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
+  }),[token, session, events]
 
 
   return (
@@ -95,7 +106,7 @@ export default function Home() {
           Próximos Eventos
         </h2>
         <div className='flex flex-row mx-auto p-2'>
-          <EventsList events={upcomingEvents} />
+          <EventsList events={events} />
         </div>
 
         <Link
