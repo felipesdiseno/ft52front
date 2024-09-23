@@ -1,7 +1,11 @@
+import InputEventAd from "@/components/inputEventAdministrator";
+
 function EditEvent(){
 
     return(
-        <div>Editor de eventos</div>
+       <div>
+        <InputEventAd/>
+       </div>
     )
 }
 

@@ -17,14 +17,14 @@ export function useFetchEvents() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const response = await fetch('http://localhost:3003/events');
+        const response = await fetch('http://localhost:3005/events');
         if (!response.ok) {
           throw new Error('Error fetching events');
         }
         const data = await response.json();
         setEvents(data);
-      } catch (error: any) {
-        setError(error.message);
+      } catch (error) {
+        setError((error as Error).message);
       } finally {
         setLoading(false);
       }
