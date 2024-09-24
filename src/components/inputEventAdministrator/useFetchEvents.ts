@@ -6,7 +6,7 @@ interface Event {
   date: string;
   time: string;
   location: string;
-  imageUrl: string;
+  images: string[];
 }
 
 export function useFetchEvents() {
@@ -22,7 +22,12 @@ export function useFetchEvents() {
           throw new Error('Error fetching events');
         }
         const data = await response.json();
-        setEvents(data);
+
+        if (Array.isArray(data.events)) {
+          setEvents(data.events);
+        } else {
+          setError('La estructura de los datos no es la esperada');
+        }
       } catch (error) {
         setError((error as Error).message);
       } finally {

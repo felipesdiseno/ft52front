@@ -1,52 +1,53 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DatePickerDemo } from './datePicker';
 import { Input } from '@/components/ui/input';
 import { InputFile } from './inputFile';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
+
+
 
 function InputEventAd() {
-  const [eventName, setEventName] = useState('');
+  const [title, setTitle] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [eventLocation, setEventLocation] = useState('');
-  const [eventOrganizer, setEventOrganizer] = useState('');
-  const [creatorId, setCreatorId] = useState('');
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
-
+  const [description, setDescription] = useState('');
+  // const [creatorId, setCreatorId] = useState('');
+  const [images, setImages] = useState<string | null>(null);
+  const { token, session } = useAuth();
   const handleSubmit = async () => {
-    console.log('Nombre del evento:', eventName);
+    console.log('Nombre del evento:', title);
     console.log('Fecha del evento:', eventDate);
     console.log('Ubicación del evento:', eventLocation);
-    console.log('Organizador del evento:', eventOrganizer);
-    console.log('URL de la imagen:', imgUrl);
-    if (
-      !eventName ||
-      !eventDate ||
-      !eventLocation ||
-      !eventOrganizer ||
-      !imgUrl
-    ) {
-      console.error('Todos los campos son obligatorios');
+
+   const creatorId= session?.creatorId
+
+    if (!title || !eventDate || !eventLocation || !description || !images || !token || !creatorId) {
+      console.error('Todos los campos son obligatorios y se requiere autenticación.');
       return;
     }
+    
 
     const eventData = {
-      name: eventName,
+      title: title,
       date: eventDate,
       location: eventLocation,
-      organizer: eventOrganizer,
-      imageUrl: imgUrl,
+      description: description,
+      images: [images],
       creatorId: creatorId,
     };
-    console.log('Datos a enviar:', eventData);
+
     try {
-      const response = await fetch('https://your-backend-url.com/api/events', {
+      const response = await fetch('http://localhost:3005/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Token de autenticación en la cabecera
         },
         body: JSON.stringify(eventData),
       });
+
       console.log('Respuesta del servidor:', response);
       if (response.ok) {
         console.log('Evento creado exitosamente');
@@ -69,8 +70,8 @@ function InputEventAd() {
             type="text"
             placeholder="Nombre del evento"
             className="w-auto bg-white"
-            value={eventName}
-            onChange={(e) => setEventName(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
           <DatePickerDemo onChange={(date: string) => setEventDate(date)} />
         </div>
@@ -84,13 +85,15 @@ function InputEventAd() {
           />
           <Input
             type="text"
-            placeholder="Organizador"
+            placeholder="Descripción del evento"
             className="w-[280px] bg-white"
-            value={eventOrganizer}
-            onChange={(e) => setEventOrganizer(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <InputFile onImageUpload={setImgUrl} />
+        <div className="cursor-pointer">
+          <InputFile onImageUpload={setImages} />
+        </div>
       </div>
       <div className="flex justify-end gap-2">
         <Button className="bg-transparent text-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:text-white">
