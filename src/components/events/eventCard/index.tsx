@@ -16,22 +16,33 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Switch } from '@/components/ui/switch';
+import { create } from 'domain'
 
 interface EventCardProps {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  imageUrl: string;
+    key: string
+    highlight: boolean
+    createDate: Date
+    status: string
+    title: string
+    eventDate: Date
+    eventLocation: string
+    price: number
+    stock: number
+    image: string
 }
 
 const EventCard: React.FC<EventCardProps> = ({
+  key,
+  highlight,
+  createDate,
+  status,
   title,
-  date,
-  time,
-  location,
-  imageUrl,
-}) => {
+  eventDate,
+  eventLocation,
+  price,
+  stock,
+  image}
+) => {
   return (
     <Card className="flex-shrink-0 shadow-md">
       <CardHeader>
@@ -52,16 +63,15 @@ const EventCard: React.FC<EventCardProps> = ({
           </div>
         </div>
         <CardDescription>
-          <time dateTime={date}>{new Date(date).toLocaleDateString()}</time> a
-          las {time}
+          <time>{new Date(eventDate).toLocaleDateString()}</time>
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="justify-between items-center flex flex-col">
+      <div className="justify-between items-center flex flex-col">
           <div>
             <p className="flex items-center text-muted-foreground mb-4">
               <MapPin className="mr-2 h-4 w-4" />
-              {location}
+              {eventLocation}
             </p>
           </div>
           <div
@@ -69,7 +79,7 @@ const EventCard: React.FC<EventCardProps> = ({
             style={{ height: '180px', width: '180px' }}
           >
             <Image
-              src={imageUrl}
+              src={image}
               alt={title}
               width={180}
               height={180}

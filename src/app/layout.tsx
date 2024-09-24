@@ -5,7 +5,7 @@ import { Provider } from '../components/provider'
 import NavBar from '../components/navBar'
 import Footer from '../components/footer'
 import ShowComponent from '@/components/showComponents'
-
+import AuthProvider from '@/context/AuthContext'
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -32,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <AuthProvider>
         <Provider>
           <div className='flex flex-col min-h-screen'>
             <ShowComponent>
@@ -41,6 +42,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </Provider>
+        </AuthProvider>
       </body>
     </html>
   )

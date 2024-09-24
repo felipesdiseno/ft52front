@@ -1,26 +1,29 @@
-'use client';
-import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter';
-import { SearchBar } from '@/components/dropDownEvents/searchBar';
-import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter';
-import EventsList from '@/components/events/eventsList';
-import { useFetchEvents } from '@/components/inputEventAdministrator/useFetchEvents';
+'use client'
+import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter'
+import { SearchBar } from '@/components/dropDownEvents/searchBar'
+import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter'
+import EventsList from '@/components/events/eventsList'
+import { useAuth } from '@/context/AuthContext';
+import { useEffect, useState } from 'react';
+
 function EventsPage() {
-  const { events, loading, error } = useFetchEvents();
-  if (loading) {
-    return <div>Cargando eventos...</div>;
+ 
+  const [events , setEvents] = useState([]);
+
+  const getEvents = async () => {
+    const response = await fetch('http://localhost:3003/events');
+    if (!response.ok) {
+      throw new Error('Error fetching events');
+    }
+    const data = await response.json();
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',data);
+    setEvents(data.events);
   }
+  useEffect(()=> {
+    if(events.length === 0){getEvents()}
+    console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
+  }),[events];
 
-  if (error) {
-    return <div>Error al cargar los eventos: {error}</div>;
-  }
-  const transformedEvents = events.map((event) => ({
-    title: event.title,
-    id: event.id,
-
-    time: '00:00', // Valor por defecto para time
-
-    imageUrl: event.images.length > 0 ? event.images[0] : '', // Verifica que haya imágenes
-  }));
   return (
     <div className="w-full">
       <div className="container mx-auto flex flex-col mt-4 ">
@@ -34,8 +37,8 @@ function EventsPage() {
             <SearchBar />
           </div>
         </div>
-        <div className="mt-4 mb-6">
-          <EventsList events={transformedEvents} />
+        <div className='mt-4 mb-6'>
+          <EventsList events={events} />
         </div>
       </div>
     </div>
