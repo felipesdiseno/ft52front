@@ -90,7 +90,7 @@ export default function Home() {
 
         <Link
           href="/eventsPage"
-          className="mb-6 bg-transparent border-2 border-blue-500 text-blue-500 mx-auto rounded-md p-2 flex flex-row items-center  hover:bg-blue-500 hover:text-white transform transition duration-300 ease-in-out "
+          className="mb-6 mt-10 bg-transparent border-2 border-blue-500 text-blue-500 mx-auto rounded-md p-2 flex flex-row items-center  hover:bg-blue-500 hover:text-white transform transition duration-300 ease-in-out "
         >
           <h1>Ver todos los eventos</h1>
           <Calendar className="ml-2 h-4 w-4" />
