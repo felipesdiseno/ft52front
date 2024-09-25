@@ -2,9 +2,12 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 function SignupForm() {
   const router = useRouter();
+  const { userSession } = useAuth();
+
   const formik = useFormik({
     initialValues: {
       password: '',
@@ -30,17 +33,24 @@ function SignupForm() {
         .required('El teléfono es obligatorio'),
       address: Yup.string().required('La dirección es obligatoasdaria'),
     }),
+
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://localhost:3000', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        //eliminiar linea 40, y reemplazar rest por values en linea 41
+        const { confirmPassword, ...rest } = values;
+        const formData = { email: userSession?.email, ...rest };
+        const response = await fetch(
+          'http://localhost:3005/auth/auth0/completeregister',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
           },
-          body: JSON.stringify(values),
-        });
+        );
 
-        if (response.ok) {
+        if (response.status === 201) {
           const data = await response.json();
           console.log('User Information:', data);
           alert('Te has registrado con éxito');

@@ -1,17 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 // import { ButtonIcon } from '@radix-ui/react-icons'
 import EventsList from '../components/events/eventsList';
 import FeaturedEventCard from '../components/events/featuredEventCard';
 // import { Button } from '../components/ui/button'
 import { Calendar } from 'lucide-react';
 // import { useState } from 'react'
-import Link from 'next/link'
-import { SessionProvider, useSession } from 'next-auth/react'
-import { postUserSessionData } from '@/components/loginForm/auth.helper'
-import { useAuth } from '@/context/AuthContext'
-import { set } from 'date-fns'
+import Link from 'next/link';
+
+import { useAuth } from '@/context/AuthContext';
 
 const featuredEvents = [
   {
@@ -44,32 +42,33 @@ const featuredEvents = [
     imgSrc:
       'https://imgs.search.brave.com/dyfOQ7_ZbLvAx4voghAK5dDrv0PWPne7jMiCyoROgKE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bG9zYW5kZXMuY29t/LmFyL3Jlc2l6ZXIv/djIvWkZUQUk2VzUz/VkNTNUI3N05BNVJC/UlpCSVkuanBnP2F1/dGg9ZjA2NjVhM2Uw/OGM1MzcxNThhZDI2/MDU2MjQ0OWMyNDI3/YjE5NTVhNmU3OGZk/NGNjMjQ0YTM2Nzlm/MjJiZjkyYyZ3aWR0/aD0xMjgwJmhlaWdo/dD03MjA',
   },
-]
-
+];
 
 export default function Home() {
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
-  const [events , setEvents] = useState([]);
-  const { token, session } = useAuth();
+  const [events, setEvents] = useState([]);
+  const { token, userSession } = useAuth();
 
   const getEvents = async () => {
-    const response = await fetch('http://localhost:3003/events');
+    const response = await fetch('http://localhost:3005/events');
     if (!response.ok) {
       throw new Error('Error fetching events');
     }
     const data = await response.json();
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',data);
-    setEvents(data.events)
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', data);
+    setEvents(data.events);
     return;
-  }
-  useEffect(()=> {
-    console.log('USE EFFECT EN HOME "/"', {TOKEN:token, session});
-    if(events.length === 0){getEvents()}
+  };
+  useEffect(() => {
+    console.log('USE EFFECT EN HOME "/"', { TOKEN: token, userSession });
+    if (events.length === 0) {
+      getEvents();
+    }
     console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
-  }),[token, session, events];
-
+  }),
+    [token, userSession, events];
 
   return (
     <div className="w-full">
@@ -77,7 +76,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-gray-500 mb-8 items-start mt-4">
           Próximos Eventos
         </h2>
-        <div className='flex flex-row mx-auto p-2'>
+        <div className="flex flex-row mx-auto p-2">
           <EventsList events={events} />
         </div>
 

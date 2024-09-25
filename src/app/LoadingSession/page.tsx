@@ -2,7 +2,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface IUserObject {
   providerAccountId: string;
@@ -19,7 +19,7 @@ export default function LoadingSessions() {
   const redirect = useRouter();
   const { data: session, status } = useSession();
 
-  const [parcial, setparcial] = useState(false);
+  // const [parcial, setparcial] = useState(false);
 
   useEffect(() => {
     if (userSession?.status === 'pending') {
@@ -31,6 +31,7 @@ export default function LoadingSessions() {
       status,
       session,
     );
+    console.log('@@@@@@@@@@', userSession);
     if (status === 'authenticated' && session.user) {
       const userObject = {
         providerAccountId: session.user.providerAccountId || '',
@@ -48,7 +49,7 @@ export default function LoadingSessions() {
 
   const postUserSessionData = async (userObject: IUserObject) => {
     try {
-      const response = await fetch('http://localhost:3003/auth/auth0/signup', {
+      const response = await fetch('http://localhost:3005/auth/auth0/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,8 +66,9 @@ export default function LoadingSessions() {
       //console.log('Datos enviados exitosamente al backend.', data);
       setToken(data.token);
       setSession(data.user);
+      console.log('************************', data);
       // redirect.push('/');
-      setparcial(true);
+      // setparcial(true);
     } catch (error) {
       console.error('Error al enviar los datos al backend:', error);
       throw error;

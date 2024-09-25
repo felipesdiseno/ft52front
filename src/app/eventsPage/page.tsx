@@ -1,28 +1,30 @@
-'use client'
-import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter'
-import { SearchBar } from '@/components/dropDownEvents/searchBar'
-import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter'
-import EventsList from '@/components/events/eventsList'
+'use client';
+import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter';
+import { SearchBar } from '@/components/dropDownEvents/searchBar';
+import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter';
+import EventsList from '@/components/events/eventsList';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 
 function EventsPage() {
- 
-  const [events , setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const getEvents = async () => {
-    const response = await fetch('http://localhost:3003/events');
+    const response = await fetch('http://localhost:3005/events');
     if (!response.ok) {
       throw new Error('Error fetching events');
     }
     const data = await response.json();
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',data);
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', data);
     setEvents(data.events);
-  }
-  useEffect(()=> {
-    if(events.length === 0){getEvents()}
+  };
+  useEffect(() => {
+    if (events.length === 0) {
+      getEvents();
+    }
     console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
-  }),[events];
+  }),
+    [events];
 
   return (
     <div className="w-full">
@@ -37,7 +39,7 @@ function EventsPage() {
             <SearchBar />
           </div>
         </div>
-        <div className='mt-4 mb-6'>
+        <div className="mt-4 mb-6">
           <EventsList events={events} />
         </div>
       </div>
