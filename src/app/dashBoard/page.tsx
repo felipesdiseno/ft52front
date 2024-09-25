@@ -1,7 +1,19 @@
-'use client'
+'use client';
 
-import { DonationsTable } from '@/components/tablaDonaciones'
-import { useEffect, useContext } from 'react'
+import { useState } from 'react';
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAuth } from '@/context/AuthContext';
 
 const aportes = [
   {
@@ -22,96 +34,128 @@ const aportes = [
     totalAmount: '$350.00',
     paymentMethod: 'Bank Transfer',
   },
-  {
-    aporte: 'Donación',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    aporte: 'Donación',
-    paymentStatus: 'Paid',
-    totalAmount: '$550.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    aporte: 'Donación',
-    paymentStatus: 'Pending',
-    totalAmount: '$200.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    aporte: 'Donación',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$300.00',
-    paymentMethod: 'Credit Card',
-  },
-]
+];
 
-function UserDashboard() {
-  // const { user, isLogged } = useContext(UserContext)
-  // const {events } = useContext(eventContext)
+const upcomingEvents = [
+  { id: 1, name: 'Evento 1', date: '2023-07-15' },
+  { id: 2, name: 'Evento 2', date: '2023-07-22' },
+  { id: 3, name: 'Evento 3', date: '2023-07-29' },
+];
 
-  // useEffect(() => {
-  //   if (!isLogged) {
-  //     window.location.href = 'login'
-  //   } else {
-  //     console.log('Datos del usuario:', user)
-  //     console.log('eventos:', events)
-  //   }
-  // }, [isLogged])
-
-  // if (!user) {
-  //   return (
-  //     <div className='flex items-center justify-center h-screen'>
-  //       Loading...
-  //     </div>
-  //   )
-  // }
+export default function UserDashboard() {
+  const [showDonations, setShowDonations] = useState(false);
+  const { session } = useAuth();
+  // Placeholder user data
+  const user = {
+    name: 'Lor Matias',
+    email: 'lormatias@gmail.com',
+    address: 'Escalada 1726',
+    phone: '02974219151',
+  };
 
   return (
-    <div className='min-h-screen flex items-center justify-center'>
-      <div className='p-6 rounded-lg shadow-lg relative w-full max-w-md bg-slate-200'>
-        <img
-          src='/mjp1.png'
-          alt='img mjp'
-          className='absolute top-4 left-4 w-[45px] h-[45px]'
-        />
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <Card>
+          <CardHeader className="bg-gradient-to-r from-blue-500 to-green-500 flex justify-between items-center">
+            <CardTitle className="text-3xl font-bold text-white">
+              Mi Perfil
+            </CardTitle>
+            <Avatar className="hover:cursor-pointer">
+              <AvatarImage src={session?.image} alt="User Image" />
+              <AvatarFallback>{session?.image}</AvatarFallback>
+            </Avatar>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* User Information Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Información del Usuario</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    <strong>Nombre:</strong> {user.name}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {user.email}
+                  </p>
+                  <p>
+                    <strong>Dirección:</strong> {user.address}
+                  </p>
+                  <p>
+                    <strong>Teléfono:</strong> {user.phone}
+                  </p>
+                </CardContent>
+              </Card>
 
-        <h1 className='text-2xl font-bold mb-6 text-center'>Mi perfil</h1>
+              {/* Upcoming Events Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Próximos Eventos</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {upcomingEvents.map((event) => (
+                      <li
+                        key={event.id}
+                        className="flex justify-between items-center bg-white p-3 rounded shadow-sm"
+                      >
+                        <span>{event.name}</span>
+                        <span className="text-sm text-gray-500">
+                          {event.date}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
 
-        <div className='mb-6'>
-          <div className='h-[2px] bg-blue-500'></div>
-          <div className='h-[2px] bg-green-500'></div>
-        </div>
-
-        <div className='mb-4'>
-          <p>
-            <strong>Nombre:</strong> {}
-          </p>
-          <p>
-            <strong>Email:</strong> {}
-          </p>
-          <p>
-            <strong>Dirección:</strong> {}
-          </p>
-          <p>
-            <strong>Teléfono:</strong> {}
-          </p>
-        </div>
-
-        <div className='mt-6'>
-          <h2 className='text-xl font-semibold mb-2'>Tus próximos eventos</h2>
-          <ul className='list-disc list-inside'>
-            <li>Evento 1</li>
-            <li>Evento 2</li>
-            <li>Evento 3</li>
-          </ul>
-        </div>
-        <DonationsTable aportes={aportes} />
+            {/* Donations History Section */}
+            <div className="mt-8">
+              <Button
+                onClick={() => setShowDonations(!showDonations)}
+                className="w-full justify-between"
+                variant="outline"
+              >
+                <span>Historial de Donaciones</span>
+                {showDonations ? (
+                  <ChevronUpIcon className="w-5 h-5" />
+                ) : (
+                  <ChevronDownIcon className="w-5 h-5" />
+                )}
+              </Button>
+              {showDonations && (
+                <Card className="mt-4">
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Aporte</TableHead>
+                          <TableHead>Estado</TableHead>
+                          <TableHead>Total</TableHead>
+                          <TableHead>Método de Pago</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {aportes.map((aporte, index) => (
+                          <TableRow key={index}>
+                            <TableCell>{aporte.aporte}</TableCell>
+                            <TableCell>{aporte.paymentStatus}</TableCell>
+                            <TableCell>{aporte.totalAmount}</TableCell>
+                            <TableCell>{aporte.paymentMethod}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
-  )
+  );
 }
-
-export default UserDashboard

@@ -27,12 +27,16 @@
     "@strapi/provider-upload-cloudinary": "^4.25.11",
     "@tanstack/react-table": "^8.20.5",
     "@types/tailwindcss": "^3.0.11",
+    "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "embla-carousel-react": "^8.3.0",
+    "formik": "^2.4.6",
     "local-storage": "^2.0.0",
+    "localstorage": "^1.0.1",
     "lucide-react": "^0.441.0",
     "next": "14.2.11",
     "next-auth": "^4.24.7",
@@ -42,11 +46,7 @@
     "react-icons": "^5.3.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss": "^3.4.1",
-    "tailwindcss-animate": "^1.0.7",
-    "localstorage": "^1.0.1",
-    "dotenv": "^16.4.5",
-    "axios": "^1.7.2"
-
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",
