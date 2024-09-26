@@ -35,7 +35,11 @@ function EventsList({ events }: EventsListProps) {
           eventLocation={event.eventLocation}
           price={event.price}
           stock={event.stock}
-          images={event.images.length > 0 ? event.images[0] : ''}
+          images={
+            event.images.length > 0
+              ? event.images[0]
+              : '/path/to/placeholder-image.jpg'
+          }
         />
       ))}
     </div>

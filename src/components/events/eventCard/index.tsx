@@ -16,7 +16,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Switch } from '@/components/ui/switch';
-import { create } from 'domain';
+// import { create } from 'domain';
 
 interface EventCardProps {
   key: string;
@@ -43,6 +43,7 @@ const EventCard: React.FC<EventCardProps> = ({
   stock,
   images,
 }) => {
+  console.log('=========================URL de la imagen:', images);
   return (
     <Card className="flex-shrink-0 shadow-md">
       <CardHeader>
@@ -78,14 +79,18 @@ const EventCard: React.FC<EventCardProps> = ({
             className="ml-4 flex justify-center  "
             style={{ height: '180px', width: '180px' }}
           >
-            <img
-              src={images}
-              alt={title}
-              width={180}
-              height={180}
-              className="rounded-md object-cover mx-auto"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
+            {images ? (
+              <Image
+                src={images}
+                alt={title}
+                width={180}
+                height={180}
+                className="rounded-md object-cover mx-auto"
+                style={{ maxWidth: '100%', maxHeight: '100%' }}
+              />
+            ) : (
+              <p>No image available</p>
+            )}
           </div>
         </div>
       </CardContent>
