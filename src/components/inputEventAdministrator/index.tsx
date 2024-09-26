@@ -12,13 +12,18 @@ function InputEventAd({
   eventDate,
   eventLocation,
   description,
+  price,
+  stock,
   setTitle,
   setEventDate,
   setEventLocation,
   setDescription,
+  setPrice,
+  setStock,
 }: IInputEventAdProps) {
   const { token, userSession } = useAuth();
   const [image, setImage] = useState<string>('');
+  console.log('zzzzzzzzzzzzzz', eventDate);
   const handleSubmit = async () => {
     console.log('@@@@@@@@@@@@@@@', userSession);
     const creatorId = userSession?.creatorId;
@@ -60,19 +65,25 @@ function InputEventAd({
       );
       return;
     }
+    const cleanedDateString = eventDate.replace(/(\d+)(th|st|nd|rd)/, '$1');
 
+    const eventDateConverted = new Date(cleanedDateString);
     const eventData = {
       title: title,
       description: description,
-      eventDate: eventDate, //fecha del evento
+      eventDate: eventDateConverted,
       eventLocation: eventLocation,
       images: [image],
-      // stock: stock || 0,
-      // price: price || 0,
-      creatorId: creatorId,
+      stock: stock || 0,
+      price: price || 0,
+      creator: creatorId,
     };
 
     try {
+      console.log(
+        '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@qqqqqq Event data:',
+        eventData,
+      );
       const response = await fetch('http://localhost:3005/events', {
         method: 'POST',
         headers: {
@@ -83,7 +94,7 @@ function InputEventAd({
       });
 
       console.log('Respuesta del servidor:', response);
-      if (response.ok) {
+      if (response.status === 201) {
         console.log('Evento creado exitosamente');
       } else {
         console.error('Error al crear el evento');
@@ -121,6 +132,22 @@ function InputEventAd({
             className="w-[280px] bg-white"
             onChange={(e) => setDescription(e.target.value)}
           />
+          <div className="flex flex col">
+            <Input
+              type="number"
+              placeholder="Costo del evento"
+              className="w-[280px] bg-white"
+              defaultValue={0}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <Input
+              type="number"
+              defaultValue={0}
+              placeholder="¿Cuantas personas pueden asistir?"
+              className="w-[280px] bg-white"
+              onChange={(e) => setStock(e.target.value)}
+            />
+          </div>
         </div>
         <div className="cursor-pointer">
           <InputFile

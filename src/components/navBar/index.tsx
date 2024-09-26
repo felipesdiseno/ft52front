@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaRegUserCircle, FaBars } from 'react-icons/fa';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -17,6 +17,10 @@ function NavBar() {
     setDropDownMenu(!dropDownMenu);
   };
 
+  useEffect(() => {
+    console.log('navbar', userSession);
+  }),
+    [userSession];
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
   };
@@ -63,7 +67,7 @@ function NavBar() {
             Eventos
           </Link>
           <div className="relative">
-            {(userSession?.image && (
+            {(userSession !== null && (
               <Avatar className="hover:cursor-pointer">
                 <AvatarImage
                   src={userSession?.image}
@@ -78,7 +82,6 @@ function NavBar() {
                 onClick={handleDropDownMenu}
               />
             )}
-
             {dropDownMenu && (
               <div onMouseLeave={() => setDropDownMenu(false)}>
                 <DropDownMenu />

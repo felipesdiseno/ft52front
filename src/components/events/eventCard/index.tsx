@@ -16,19 +16,19 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Switch } from '@/components/ui/switch';
-import { create } from 'domain'
+import { create } from 'domain';
 
 interface EventCardProps {
-    key: string
-    highlight: boolean
-    createDate: Date
-    status: string
-    title: string
-    eventDate: Date
-    eventLocation: string
-    price: number
-    stock: number
-    image: string
+  key: string;
+  highlight: boolean;
+  createDate: Date;
+  status: string;
+  title: string;
+  eventDate: Date;
+  eventLocation: string;
+  price: number;
+  stock: number;
+  images: string;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -41,8 +41,8 @@ const EventCard: React.FC<EventCardProps> = ({
   eventLocation,
   price,
   stock,
-  image}
-) => {
+  images,
+}) => {
   return (
     <Card className="flex-shrink-0 shadow-md">
       <CardHeader>
@@ -67,7 +67,7 @@ const EventCard: React.FC<EventCardProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-      <div className="justify-between items-center flex flex-col">
+        <div className="justify-between items-center flex flex-col">
           <div>
             <p className="flex items-center text-muted-foreground mb-4">
               <MapPin className="mr-2 h-4 w-4" />
@@ -78,8 +78,8 @@ const EventCard: React.FC<EventCardProps> = ({
             className="ml-4 flex justify-center  "
             style={{ height: '180px', width: '180px' }}
           >
-            <Image
-              src={image}
+            <img
+              src={images}
               alt={title}
               width={180}
               height={180}
