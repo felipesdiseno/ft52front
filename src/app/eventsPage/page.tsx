@@ -1,18 +1,17 @@
 'use client';
 import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter';
-import { SearchBar } from '@/components/dropDownEvents/searchBar';
+
 import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter';
 import EventsList from '@/components/events/eventsList';
 // import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 function EventsPage() {
   const [events, setEvents] = useState([]);
+  const [search, setSearch] = useState('');
   const [filteredEvents, setFilteredEvents] = useState([]);
-  //estados para incorporar a los filtros:
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
 
   const getEvents = async () => {
     const response = await fetch('http://localhost:3005/events');
@@ -22,6 +21,7 @@ function EventsPage() {
     const data = await response.json();
     console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', data);
     setEvents(data.events);
+    setFilteredEvents(data.events);
   };
   useEffect(() => {
     if (events.length === 0) {
@@ -31,38 +31,20 @@ function EventsPage() {
   }),
     [events];
   // Función para aplicar los filtros
-  useEffect(() => {
-    const applyFilters = () => {
-      let filtered = events;
 
-      // Filtrar por mes si está seleccionado
-      if (selectedMonth) {
-        filtered = filtered.filter(
-          (event) =>
-            new Date(event.date).getMonth() + 1 === parseInt(selectedMonth),
-        );
-      }
-
-      // Filtrar por año si está seleccionado
-      if (selectedYear) {
-        filtered = filtered.filter(
-          (event) =>
-            new Date(event.date).getFullYear() === parseInt(selectedYear),
-        );
-      }
-
-      // Filtrar por término de búsqueda
-      if (searchTerm) {
-        filtered = filtered.filter((event) =>
-          event.title.toLowerCase().includes(searchTerm.toLowerCase()),
-        );
-      }
-
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    const value = e.target.value;
+    setSearch(value);
+    if (value.length > 1) {
+      const filtered = events.filter((event) =>
+        event.title.toLowerCase().includes(value.toLowerCase()),
+      );
       setFilteredEvents(filtered);
-    };
-
-    applyFilters();
-  }, [selectedMonth, selectedYear, searchTerm, events]);
+    } else {
+      setFilteredEvents(events); // Reiniciar a todos los eventos si la búsqueda está vacía
+    }
+  };
   return (
     <div className="w-full">
       <div className="container mx-auto flex flex-col mt-4 ">
@@ -73,11 +55,21 @@ function EventsPage() {
           <div className="flex flex-row gap-6 ">
             <ComboboxDemo />
             <ComboboxDemoYear />
-            <SearchBar />
+            <div className="flex w-auto max-w-sm items-center space-x-2">
+              <Input
+                type="text"
+                placeholder=""
+                value={search}
+                onChange={handleSearch}
+              />
+              <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
+                Buscar
+              </Button>
+            </div>
           </div>
         </div>
         <div className="mt-4 mb-6">
-          <EventsList events={events} />
+          <EventsList events={filteredEvents} />
         </div>
       </div>
     </div>

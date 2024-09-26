@@ -106,33 +106,43 @@ function InputEventAd({
 
   return (
     <div className="">
-      <div className="p-2 space-y-2">
+      <div className="p-2 space-y-2 ">
         <h1 className="font-bold text-[28px] text-gray-500 mb-4">
           Crear evento:
         </h1>
         <div className="flex flex-row gap-2">
-          <Input
-            type="text"
-            placeholder="Nombre del evento"
-            className="w-auto bg-white"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <DatePickerDemo onChange={(date: string) => setEventDate(date)} />
-        </div>
-        <div className="flex flex-row gap-2">
-          <Input
-            type="text"
-            placeholder="Ubicación"
-            className="w-auto bg-white"
-            onChange={(e) => setEventLocation(e.target.value)}
-          />
-          <Input
-            type="text"
-            placeholder="Descripción del evento"
-            className="w-[280px] bg-white"
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <div className="flex flex col">
+          <div className="flex flex-col">
+            <p className="text-white">Capacidad:</p>
+            <Input
+              type="text"
+              placeholder="Nombre del evento"
+              className="w-auto bg-white"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <p className="text-white">Capacidad:</p>
+
+            <DatePickerDemo onChange={(date: string) => setEventDate(date)} />
+          </div>
+          <div className="flex flex-col  items">
+            <p className="text-white">Capacidad:</p>
+
+            <Input
+              type="text"
+              placeholder="Ubicación"
+              className="w-auto bg-white"
+              onChange={(e) => setEventLocation(e.target.value)}
+            />
+            <p className="text-white">Capacidad:</p>
+
+            <Input
+              type="text"
+              placeholder="Descripción del evento"
+              className="w-[280px] bg-white"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-gray-500">Costo:</p>
             <Input
               type="number"
               placeholder="Costo del evento"
@@ -140,10 +150,12 @@ function InputEventAd({
               defaultValue={0}
               onChange={(e) => setPrice(e.target.value)}
             />
+            <p className="text-gray-500">Capacidad:</p>
+
             <Input
               type="number"
-              defaultValue={0}
               placeholder="¿Cuantas personas pueden asistir?"
+              defaultValue={0}
               className="w-[280px] bg-white"
               onChange={(e) => setStock(e.target.value)}
             />

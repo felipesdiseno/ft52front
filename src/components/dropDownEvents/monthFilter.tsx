@@ -70,28 +70,34 @@ const meses = [
   },
 ];
 
-export function ComboboxDemo() {
+export function ComboboxDemo({ onMonthSelect }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
+  const handleSelect = (currentValue) => {
+    const newValue = currentValue === value ? '' : currentValue;
+    setValue(newValue);
+    setOpen(false);
+    onMonthSelect(newValue); // Llamar a la función pasada como prop
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant='outline'
-          role='combobox'
+          variant="outline"
+          role="combobox"
           aria-expanded={open}
-          className='w-[200px] justify-between'
+          className="w-[200px] justify-between"
         >
           {value
             ? meses.find((framework) => framework.value === value)?.label
             : 'Filtrar por mes...'}
-          <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[200px] p-0'>
+      <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder='Search framework...' />
+          <CommandInput placeholder="Search framework..." />
           <CommandList>
             <CommandEmpty>Mes no encontrado.</CommandEmpty>
             <CommandGroup>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PreviewCardProps from '@/interfaces/IPreviewCardProps';
+
 function CardPreview({
   title,
   eventDate,
@@ -16,7 +17,7 @@ function CardPreview({
       <div className=" mx-auto flex items-center justify-center">
         <div className="border p-4 rounded-lg shadow-lg max-w-sm">
           <img
-            src={image || '/placeholder-image.jpg'}
+            src={image}
             alt={title}
             className="w-full h-48 object-cover rounded-lg"
           />

@@ -1,26 +1,35 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+  const toggleMenu = (menuName: string) => {
+    setActiveMenu((prevMenu) => (prevMenu === menuName ? null : menuName));
+  };
+
   return (
-    <div className="flex h-screen">
+    <div className="flex  min-h-screen mb-10">
       {/* Sidebar */}
       <div className="w-64 h-full flex flex-col justify-between border-e bg-white">
         <div className="px-4 py-6">
           <span className="sr-only">Home</span>
-          <Image
-            alt="Descripción de la imagen"
-            src="/image/Logo.png"
-            width={35}
-            height={25}
-          />
-          <a
-            href="/"
-            className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-          >
-            Volver a inicio
-          </a>
+          <div className="flex flex-row">
+            <Image
+              alt="Descripción de la imagen"
+              src="/image/Logo.png"
+              width={35}
+              height={25}
+            />
+            <a
+              href="/"
+              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            >
+              Volver a inicio
+            </a>
+          </div>
 
           <ul className="mt-6 space-y-1">
             <li>
@@ -32,12 +41,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </a>
             </li>
 
+            {/* Eventos Menu */}
             <li>
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+              <div>
+                <button
+                  onClick={() => toggleMenu('eventos')}
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
                   <span className="text-sm font-medium"> Eventos </span>
-
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                  <span
+                    className={`transition duration-300 ${
+                      activeMenu === 'eventos' ? '-rotate-180' : ''
+                    }`}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="size-5"
@@ -51,44 +67,51 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       />
                     </svg>
                   </span>
-                </summary>
-
-                <ul className="mt-2 space-y-1 px-4">
-                  <li>
-                    <Link
-                      href="dashBoard-Admin/events/editEvent"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Crear y editar Eventos
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      href="dashboard-Admin/events/currentevents"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Eventos vigentes
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/eventAssitance"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Asistencia de eventos
-                    </Link>
-                  </li>
-                </ul>
-              </details>
+                </button>
+                {activeMenu === 'eventos' && (
+                  <ul className="mt-2 space-y-1 px-4">
+                    <li>
+                      <Link
+                        href="dashBoard-Admin/events/editEvent"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Crear y editar Eventos
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="dashboard-Admin/events/currentevents"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Eventos vigentes
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/eventAssitance"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Asistencia de eventos
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </li>
 
+            {/* Donaciones Menu */}
             <li>
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+              <div>
+                <button
+                  onClick={() => toggleMenu('donaciones')}
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
                   <span className="text-sm font-medium"> Donaciones </span>
-
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                  <span
+                    className={`transition duration-300 ${
+                      activeMenu === 'donaciones' ? '-rotate-180' : ''
+                    }`}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="size-5"
@@ -102,27 +125,35 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       />
                     </svg>
                   </span>
-                </summary>
-
-                <ul className="mt-2 space-y-1 px-4">
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Historial de donaciones
-                    </a>
-                  </li>
-                </ul>
-              </details>
+                </button>
+                {activeMenu === 'donaciones' && (
+                  <ul className="mt-2 space-y-1 px-4">
+                    <li>
+                      <a
+                        href="#"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Historial de donaciones
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </li>
 
+            {/* Posteos Menu */}
             <li>
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+              <div>
+                <button
+                  onClick={() => toggleMenu('posteos')}
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
                   <span className="text-sm font-medium"> Posteos </span>
-
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                  <span
+                    className={`transition duration-300 ${
+                      activeMenu === 'posteos' ? '-rotate-180' : ''
+                    }`}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="size-5"
@@ -136,44 +167,51 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       />
                     </svg>
                   </span>
-                </summary>
-
-                <ul className="mt-2 space-y-1 px-4">
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Crear y editar noticias
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      carga de imagenes de eventos
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Historial de Eventos e imagenes
-                    </a>
-                  </li>
-                </ul>
-              </details>
+                </button>
+                {activeMenu === 'posteos' && (
+                  <ul className="mt-2 space-y-1 px-4">
+                    <li>
+                      <a
+                        href="#"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Crear y editar noticias
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Carga de imágenes de eventos
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Historial de eventos e imágenes
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </li>
 
+            {/* Usuarios Menu */}
             <li>
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+              <div>
+                <button
+                  onClick={() => toggleMenu('usuarios')}
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
                   <span className="text-sm font-medium"> Usuarios </span>
-
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                  <span
+                    className={`transition duration-300 ${
+                      activeMenu === 'usuarios' ? '-rotate-180' : ''
+                    }`}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="size-5"
@@ -187,41 +225,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       />
                     </svg>
                   </span>
-                </summary>
-
-                <ul className="mt-2 space-y-1 px-4">
-                  <li>
-                    <a
-                      href="dashBoard-Admin/controlUsuarios"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Modificar estado de usuarios
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Inscripciones
-                    </a>
-                  </li>
-                </ul>
-              </details>
+                </button>
+                {activeMenu === 'usuarios' && (
+                  <ul className="mt-2 space-y-1 px-4">
+                    <li>
+                      <a
+                        href="#"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      >
+                        Lista de usuarios
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </li>
-            <li></li>
           </ul>
         </div>
-        <a
-          href="#"
-          className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-        >
-          Cerrar sesion
-        </a>
       </div>
 
-      <main className="flex-grow p-6 bg-gray-100">{children}</main>
+      <div className="flex-1">{children}</div>
     </div>
   );
 }
