@@ -11,10 +11,11 @@ interface Session {
   name: string;
   email: string;
   image: string | undefined;
-  providerId: string;
+  providerAcountId: string;
   creatorId: string;
   status: string | undefined;
 }
+
 interface AuthContextType {
   token: string | null;
   userSession: Session | null;
@@ -34,22 +35,19 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [userSession, setSession] = useState<Session | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-
+  const [userSession, setSession] = useState<Session | null>(null)
+  const [token, setToken] = useState<string | null>(null)
+ 
   useEffect(() => {
-    console.log('useEffect de context');
-    // Verificar si el entorno es del lado del cliente
+    console.log('useEffect de context')
+  
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token');
-      const storedSession = JSON.parse(
-        localStorage.getItem('userSession') || 'null',
-      );
-
+      const storedSession = JSON.parse(localStorage.getItem('session') || 'null');
+  
       if (storedToken && storedSession) {
-        // Si hay un token y una sesión almacenados, establece el estado
-        setSession(storedSession);
-        setToken(storedToken);
+        setSession(storedSession)
+        setToken(storedToken)
       } else {
         // Si no hay token, limpiar sesión y localStorage
         setSession(null);
@@ -58,6 +56,7 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
       }
     }
   }, []);
+
 
   const handleSetToken = (newToken: string | null) => {
     setToken(newToken);
@@ -103,6 +102,9 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
 };
 
 export default AuthProvider;
+
+
+
 
 /*
 cart, setOnCart: handleNewProduct, randomizer, setRandomizer: handleRandomizer,

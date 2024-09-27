@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { Provider } from '@/components/provider';
 
 function SignupForm() {
   const router = useRouter();
@@ -36,9 +37,11 @@ function SignupForm() {
 
     onSubmit: async (values) => {
       try {
-        //eliminiar linea 40, y reemplazar rest por values en linea 41
-        const { confirmPassword, ...rest } = values;
-        const formData = { email: userSession?.email, ...rest };
+        const formData = {
+          email: userSession?.email,
+          providerAcountId: userSession?.providerAcountId,
+          ...values,
+        };
         const response = await fetch(
           'http://localhost:3005/auth/auth0/completeregister',
           {

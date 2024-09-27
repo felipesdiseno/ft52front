@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from 'react-day-picker';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div className="w-64 h-full flex flex-col justify-between border-e bg-white">
         <div className="px-4 py-6">
           <span className="sr-only">Home</span>
@@ -15,21 +15,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             width={35}
             height={25}
           />
-          <a
+          <Link
             href="/"
             className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
           >
             Volver a inicio
-          </a>
+          </Link>
 
           <ul className="mt-6 space-y-1">
-            <li>
-              <a
-                href="#"
-                className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
-              >
-                General
-              </a>
+            <li className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700">
+              General
             </li>
 
             <li>
@@ -213,12 +208,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <li></li>
           </ul>
         </div>
-        <a
-          href="#"
+        <button 
+         
           className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
         >
           Cerrar sesion
-        </a>
+        </button>
       </div>
 
       <main className="flex-grow p-6 bg-gray-100">{children}</main>
