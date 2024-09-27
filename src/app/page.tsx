@@ -45,7 +45,6 @@ const featuredEvents = [
   },
 ];
 
-
 export default function Home() {
   const redirect = useRouter();
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -65,7 +64,7 @@ export default function Home() {
     return;
   };
   useEffect(() => {
-    if(userSession?.status === 'pending'){
+    if (userSession?.status === 'pending') {
       redirect.push('/formpage');
       return;
     }
@@ -74,7 +73,7 @@ export default function Home() {
       getEvents();
     }
     console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
-    console.log ("datos del usuario logeado" , userSession)
+    console.log('datos del usuario logeado', userSession);
   }),
     [token, userSession, events];
 

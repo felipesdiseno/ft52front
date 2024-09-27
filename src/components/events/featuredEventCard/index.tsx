@@ -16,7 +16,7 @@ type featuredEventProps = {
 
 function FeaturedEventCard({ imgSrc, description, title }: featuredEventProps) {
   return (
-    <Card className="w-1/2 max-w-[350px] shadow-lg bg-red-500">
+    <Card className="w-1/2 max-w-[350px] shadow-lg ">
       <CardContent className="pt-6  ">
         <CardTitle className="mb-4">{title}</CardTitle>
         <div className="relative aspect-[16/9] w-full ">

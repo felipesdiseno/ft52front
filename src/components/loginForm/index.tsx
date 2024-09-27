@@ -48,24 +48,27 @@ function LoginForm() {
         if (!response.ok) {
           const errorData = await response.json();
           console.error('ERROR EN LA RESPUESTA DEL SERVIDOR:', errorData);
-          window.alert('ERROR EN LA RESPUESTA DEL SERVIDOR: ' + errorData.message);
+          window.alert(
+            'ERROR EN LA RESPUESTA DEL SERVIDOR: ' + errorData.message,
+          );
           route.push('/login');
           return;
         }
-        
+
         const data = await response.json();
-        if(data.redirect === true){
-          window.alert('No has terminado de completar tu registro al iniciar sesion con el servicio de google ,te invitamos a completarlo');
+        if (data.redirect === true) {
+          window.alert(
+            'No has terminado de completar tu registro al iniciar sesion con el servicio de google ,te invitamos a completarlo',
+          );
           handleClickGoogle();
           return;
         }
 
         setSession(data.user);
         setToken(data.token);
-          window.alert('has iniciado sesion exitosamente');
-          route.push('/');
-          return;
-
+        window.alert('has iniciado sesion exitosamente');
+        route.push('/');
+        return;
       } catch (error) {
         console.error('Error en el inicio de sesión:', error);
         setErrors({ email: 'Error en el inicio de sesión' });
@@ -84,118 +87,117 @@ function LoginForm() {
   };
 
   return (
-    <section className="bg-white mb-10">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+    <div className="flex flex-row w-full h-screen bg-white wap-4">
+      <div className="flex flex-col p-6 justify-center w-1/2  ">
+        <div className=" p-4 rounded-xl shadow-lg  ">
           <Image
             alt="Descripción de la imagen"
-            src="/image/logo-viejo-nuevo.jpg"
-            layout="fill"
-            objectFit="cover"
+            src="/image/Logo.png"
+            width={75}
+            height={50}
+            className=" mx-auto"
           />
-        </aside>
-
-        <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-          <div className="w-full max-w-4xl h-auto lg:w-[500px] lg:h-[350px] flex flex-col justify-center mx-auto px-4">
-            <a className="block text-blue-600" href="#">
-              <span className="sr-only">Home</span>
-              <Image
-                alt="Descripción de la imagen"
-                src="/image/Logo.png"
-                width={50}
-                height={25}
+          <h1 className="mt-6 text-2xl font-serif text-gray-900 sm:text-3xl md:text-4xl mx-auto text-center">
+            Bienvenidos a Movimiento Juvenil Peregrino
+          </h1>
+          <p className="mt-4 leading-relaxed text-gray-700 sm:text-2xl md:text-2xl text-center">
+            &quot;Reconociéndonos testigos, ofrecemos nuestros dones a la
+            iglesia.&quot;
+          </p>
+          <form
+            onSubmit={handleSubmit}
+            className="mt-8 grid grid-cols-6 gap-6 w-full ml-20"
+          >
+            <div className="col-span-4">
+              <label
+                htmlFor="Email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Correo
+              </label>
+              <input
+                type="email"
+                id="Email"
+                name="email"
+                value={loginUser.email}
+                onChange={(e) =>
+                  setLoginUser({ ...loginUser, email: e.target.value })
+                }
+                className={`mt-1 w-full p-4 border  ${
+                  errors.email ? 'border-red-500' : 'border-gray-400 rounded-sm'
+                } bg-white text-sm text-gray-400 shadow-sm`}
               />
-            </a>
-            <div>
-              <h1 className="mt-6 text-2xl font-serif text-gray-900 sm:text-3xl md:text-4xl">
-                Bienvenidos a Movimiento Juvenil Peregrino
-              </h1>
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
             </div>
-            <p className="mt-4 leading-relaxed text-gray-700 sm:text-2xl md:text-2xl">
-              &quot; Reconociéndonos testigos, ofrecemos nuestros dones a la
-              iglesia. &quot;
+
+            <div className="col-span-4">
+              <label
+                htmlFor="Password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Contraseña
+              </label>
+              <input
+                type="password"
+                id="Password"
+                name="password"
+                value={loginUser.password}
+                onChange={(e) =>
+                  setLoginUser({ ...loginUser, password: e.target.value })
+                }
+                className={`mt-1 w-full p-4 border ${
+                  errors.password
+                    ? 'border-red-500'
+                    : 'border-gray-400 rounded-sm'
+                } bg-white text-sm text-gray-400 shadow-sm mb-4`}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
+            </div>
+          </form>
+          <div className="flex flex-col items-center gap-4 w-full">
+            <div className="flex flex-row items-center gap-4 justify-center w-full mt-10">
+              <button
+                type="submit"
+                className="inline-block rounded-md border border-blue-600 bg-blue-600 px-2 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 w-full max-w-xs"
+              >
+                Ingresar
+              </button>
+              <button
+                onClick={handleClickGoogle}
+                type="button"
+                className="flex items-center justify-center w-full max-w-xs px-2 py-3 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:border-blue-600 transition duration-300 ease-in-out"
+              >
+                <FcGoogle className="w-6 h-6" />
+                <span className="ml-3 text-sm font-medium text-gray-700">
+                  Continuar con Google
+                </span>
+              </button>
+            </div>
+            <p className="mt-6 text-sm text-gray-500 sm:mt-0 mb-6">
+              No tienes una cuenta? Puedes registrarte
+              <Link
+                href={'/register'}
+                className="text-blue-500 font-bold hover:underline hover:text-blue-600 ml-1"
+              >
+                Aquí
+              </Link>
+              .
             </p>
-
-            <form
-              onSubmit={handleSubmit}
-              className="mt-8 grid grid-cols-6 gap-6"
-            >
-              <div className="col-span-6">
-                <label
-                  htmlFor="Email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="Email"
-                  name="email"
-                  value={loginUser.email}
-                  onChange={(e) =>
-                    setLoginUser({ ...loginUser, email: e.target.value })
-                  }
-                  className={`mt-1 w-full p-4 border ${errors.email ? 'border-red-500' : 'border-gray-200'} bg-white text-sm text-gray-700 shadow-sm`}
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email}</p>
-                )}
-              </div>
-
-              <div className="col-span-6">
-                <label
-                  htmlFor="Password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="Password"
-                  name="password"
-                  value={loginUser.password}
-                  onChange={(e) =>
-                    setLoginUser({ ...loginUser, password: e.target.value })
-                  }
-                  className={`mt-1 w-full p-4 border ${errors.password ? 'border-red-500' : 'border-gray-200'} bg-white text-sm text-gray-700 shadow-sm mb-4`}
-                />
-                {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password}</p>
-                )}
-              </div>
-
-              <div className="flex flex-col items-center gap-4 2-full">
-                <div className="flex flex-row items-center gap-4 justify-center w-full mt-10">
-                  <button
-                    type="submit"
-                    className="inline-block  rounded-md border border-blue-600 bg-blue-600 px-2 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 w-full max-w-xs"
-                  >
-                    Ingresar
-                  </button>
-                  <button
-                    onClick={handleClickGoogle}
-                    type="button"
-                    className="flex items-center justify-center w-full max-w-xs px-2 py-3 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:border-blue-600 transition duration-300 ease-in-out"
-                  >
-                    <FcGoogle className="w-6 h-6" />
-                    <span className="ml-3 text-sm font-medium text-gray-700">
-                      Continuar con Google
-                    </span>
-                  </button>
-                </div>
-                <p className="mt-6 text-sm text-gray-500 sm:mt-0">
-                  No tienes una cuenta? Puedes registrarte{' '}
-                  <Link href={'/register'} className="text-gray-950">
-                    Aquí
-                  </Link>
-                  .
-                </p>
-              </div>
-            </form>
           </div>
-        </main>
+        </div>
       </div>
-    </section>
+      <div className="w-1/2">
+        <img
+          alt="Descripción de la imagen"
+          src="/image/logo-viejo-nuevo.jpg"
+          className="w-full h-full object-cover"
+        />
+      </div>
+    </div>
   );
 }
 
