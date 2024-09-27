@@ -67,14 +67,14 @@ function NavBar() {
             Eventos
           </Link>
           <div className="relative">
-            {(userSession !== null && (
+            {(userSession?.image && (
               <Avatar className="hover:cursor-pointer">
                 <AvatarImage
                   src={userSession?.image}
                   onClick={handleDropDownMenu}
                   onMouseEnter={() => setDropDownMenu(true)}
                 />
-                <AvatarFallback></AvatarFallback>
+                <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             )) || (
               <FaRegUserCircle
@@ -82,6 +82,7 @@ function NavBar() {
                 onClick={handleDropDownMenu}
               />
             )}
+
             {dropDownMenu && (
               <div onMouseLeave={() => setDropDownMenu(false)}>
                 <DropDownMenu />

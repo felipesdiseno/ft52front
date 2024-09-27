@@ -30,7 +30,6 @@ function LoginForm() {
   const [errors, setErrors] = useState<ILoginError>({});
 
   const handleSubmit = async (event: React.FormEvent) => {
-    
     event.preventDefault();
     const validationErrors = validateLoginForm(loginUser);
 
@@ -161,23 +160,25 @@ function LoginForm() {
                 )}
               </div>
 
-              <div className="flex flex-col items-center gap-4">
-                <button
-                  type="submit"
-                  className="inline-block rounded-md border border-blue-600 bg-blue-600 px-2 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 w-full max-w-xs"
-                >
-                  Ingresar
-                </button>
-                <button
-                  onClick={handleClickGoogle}
-                  type="button"
-                  className="flex items-center justify-center w-full max-w-xs px-2 py-3 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:border-blue-600 transition duration-300 ease-in-out"
-                >
-                  <FcGoogle className="w-6 h-6" />
-                  <span className="ml-3 text-sm font-medium text-gray-700">
-                    Continuar con Google
-                  </span>
-                </button>
+              <div className="flex flex-col items-center gap-4 2-full">
+                <div className="flex flex-row items-center gap-4 justify-center w-full mt-10">
+                  <button
+                    type="submit"
+                    className="inline-block  rounded-md border border-blue-600 bg-blue-600 px-2 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 w-full max-w-xs"
+                  >
+                    Ingresar
+                  </button>
+                  <button
+                    onClick={handleClickGoogle}
+                    type="button"
+                    className="flex items-center justify-center w-full max-w-xs px-2 py-3 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:border-blue-600 transition duration-300 ease-in-out"
+                  >
+                    <FcGoogle className="w-6 h-6" />
+                    <span className="ml-3 text-sm font-medium text-gray-700">
+                      Continuar con Google
+                    </span>
+                  </button>
+                </div>
                 <p className="mt-6 text-sm text-gray-500 sm:mt-0">
                   No tienes una cuenta? Puedes registrarte{' '}
                   <Link href={'/register'} className="text-gray-950">
