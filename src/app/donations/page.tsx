@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { HeartIcon } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 const client = new MercadoPagoConfig({
   accessToken:
@@ -20,6 +21,7 @@ const client = new MercadoPagoConfig({
 });
 
 export default function Home() {
+  // const { token, userSession } = useAuth();
   async function donate(formData: FormData) {
     'use server';
 
@@ -39,6 +41,7 @@ export default function Home() {
     const donationData = {
       amount: Number(formData.get('amount')),
       message: formData.get('message') as string,
+      // creator: userSession?.creatorId,
     };
 
     await fetch('http://localhost:3003/donations/savedonations', {
