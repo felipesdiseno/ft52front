@@ -10,7 +10,8 @@ const ShowComponent = ({ children }: { children: React.ReactNode }) => {
       {pathname.includes("dashBoard-Admin") ||
       pathname.includes("login") ||
       pathname.includes("register") ||
-      pathname.includes("loadingSession") ? null : (
+      pathname.includes("loadingsession") ||
+      pathname.includes("formpage") ? null : (
         <div>{children}</div>
       )}
     </div>
