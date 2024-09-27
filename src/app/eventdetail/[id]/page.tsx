@@ -1,4 +1,4 @@
-import EventCard from "@/components/eventDetail/indext";
+import EventCard from "@/components/events/eventCard";
 import EventsList from "@/components/events/eventsList";
 
 function eventDetail(){
@@ -6,7 +6,7 @@ function eventDetail(){
 
     return(
        <>
-        <EventCard/>
+      
 
        </>
     )
