@@ -23,6 +23,7 @@ function InputEventAd({
 }: Partial<IInputEventAdProps>) {
 const { token, userSession } = useAuth();
   useEffect(() => {
+    console.log("useEfect de arriba", userSession)
 }),[userSession, token]
 
   const port = process.env.NEXT_PUBLIC_APP_API_PORT;
@@ -54,6 +55,7 @@ const { token, userSession } = useAuth();
     }
 
     if (!creatorId) {
+      console.log("AcreatorId " , creatorId);
       console.error('Se requiere un "creatorId".');
       return;
     }

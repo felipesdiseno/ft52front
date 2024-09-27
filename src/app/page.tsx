@@ -74,6 +74,7 @@ export default function Home() {
       getEvents();
     }
     console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
+    console.log ("datos del usuario logeado" , userSession)
   }),
     [token, userSession, events];
 

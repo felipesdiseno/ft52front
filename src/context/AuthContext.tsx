@@ -14,6 +14,8 @@ interface Session {
   providerAccountId: string;
   creatorId: string;
   status: string | undefined;
+  address: string | undefined;
+  phone: string | undefined;
 }
 
 interface AuthContextType {
@@ -43,7 +45,7 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
   
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token');
-      const storedSession = JSON.parse(localStorage.getItem('session') || 'null');
+      const storedSession = JSON.parse(localStorage.getItem('userSession') || 'null');
   
       if (storedToken && storedSession) {
         setSession(storedSession)

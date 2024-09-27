@@ -44,14 +44,8 @@ const upcomingEvents = [
 
 export default function UserDashboard() {
   const [showDonations, setShowDonations] = useState(false);
-  const { session } = useAuth();
+  const { userSession } = useAuth();
   // Placeholder user data
-  const user = {
-    name: 'Lor Matias',
-    email: 'lormatias@gmail.com',
-    address: 'Escalada 1726',
-    phone: '02974219151',
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -62,8 +56,8 @@ export default function UserDashboard() {
               Mi Perfil
             </CardTitle>
             <Avatar className="hover:cursor-pointer">
-              <AvatarImage src={session?.image} alt="User Image" />
-              <AvatarFallback>{session?.image}</AvatarFallback>
+              <AvatarImage src={userSession?.image} alt="User Image" />
+              <AvatarFallback>{userSession?.image}</AvatarFallback>
             </Avatar>
           </CardHeader>
           <CardContent className="p-6">
@@ -75,16 +69,16 @@ export default function UserDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p>
-                    <strong>Nombre:</strong> {user.name}
+                    <strong>Nombre:</strong> {userSession?.name}
                   </p>
                   <p>
-                    <strong>Email:</strong> {user.email}
+                    <strong>Email:</strong> {userSession?.email}
                   </p>
                   <p>
-                    <strong>Dirección:</strong> {user.address}
+                    <strong>Dirección:</strong> {userSession?.address}
                   </p>
                   <p>
-                    <strong>Teléfono:</strong> {user.phone}
+                    <strong>Teléfono:</strong> {userSession?.phone}
                   </p>
                 </CardContent>
               </Card>
