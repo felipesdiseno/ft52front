@@ -15,6 +15,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/context/AuthContext';
 
+
 const aportes = [
   {
     aporte: 'Donación',
@@ -44,7 +45,7 @@ const upcomingEvents = [
 
 export default function UserDashboard() {
   const [showDonations, setShowDonations] = useState(false);
-  const { userSession } = useAuth();
+  const { userSession } = useAuth()
   // Placeholder user data
 
   return (

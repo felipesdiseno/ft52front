@@ -14,8 +14,8 @@ interface Session {
   providerAccountId: string;
   creatorId: string;
   status: string | undefined;
-  address: string | undefined;
   phone: string | undefined;
+  address: string | undefined;
 }
 
 interface AuthContextType {

@@ -73,8 +73,12 @@ export default function LoadingSessions() {
         router.push('/formpage');
         return;
       }
-      console.log("RESULTADO DEL CONDICIONAL DE ESTADO !== A PENDING",data.user.status)
+
+      setSession(data.user);
+      setToken(data.token);
       router.push('/');
+      return;
+
     } catch (error) {
       console.error('Error al enviar los datos al backend:', error);
       window.alert('Error al enviar los datos al backend.');
