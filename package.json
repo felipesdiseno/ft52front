@@ -10,6 +10,7 @@
     "format": "next format"
   },
   "dependencies": {
+    "@mercadopago/sdk-react": "^0.0.19",
     "@next/swc-win32-x64-msvc": "^14.2.12",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -38,6 +39,7 @@
     "local-storage": "^2.0.0",
     "localstorage": "^1.0.1",
     "lucide-react": "^0.441.0",
+    "mercadopago": "^2.0.15",
     "next": "14.2.11",
     "next-auth": "^4.24.7",
     "react": "^18",
