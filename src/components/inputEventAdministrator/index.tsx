@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DatePickerDemo } from './datePicker';
 import { Input } from '@/components/ui/input';
 import { InputFile } from './inputFile';
@@ -21,8 +21,12 @@ function InputEventAd({
   setPrice,
   setStock,
 }: Partial<IInputEventAdProps>) {
+const { token, userSession } = useAuth();
+  useEffect(() => {
+}),[userSession, token]
+
   const port = process.env.NEXT_PUBLIC_APP_API_PORT;
-  const { token, userSession } = useAuth();
+
   const [image, setImage] = useState<string>('');
   console.log('zzzzzzzzzzzzzz', eventDate);
   const handleSubmit = async () => {
@@ -77,7 +81,7 @@ function InputEventAd({
       images: [image],
       stock: stock || 0,
       price: price || 0,
-      creator: creatorId,
+      creator: userSession?.creatorId,
     };
 
     try {
