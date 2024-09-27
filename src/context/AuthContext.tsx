@@ -11,7 +11,7 @@ interface Session {
   name: string;
   email: string;
   image: string | undefined;
-  providerAcountId: string;
+  providerAccountId: string;
   creatorId: string;
   status: string | undefined;
 }

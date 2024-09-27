@@ -66,10 +66,10 @@ export default function LoadingSessions() {
       }
 
       const data = await response.json();
-      setToken(data.token);
-      setSession(data.user);
       console.log("RESULTADO DEL CONDICIONAL DE ESTADO DE USER, DATA.USER",data.user)
       if(data.user.status === 'pending'){
+        setSession(data.user);
+        setToken(data.token);
         router.push('/formpage');
         return;
       }

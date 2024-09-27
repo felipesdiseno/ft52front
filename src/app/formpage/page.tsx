@@ -4,11 +4,20 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Provider } from '@/components/provider';
+import { use, useEffect } from 'react';
 
 function SignupForm() {
   const port = process.env.NEXT_PUBLIC_APP_API_PORT;
   const router = useRouter();
-  const { userSession } = useAuth();
+  const { userSession, setSession, setToken } = useAuth();
+  
+  useEffect(() => {
+    console.log('USEEFFECT, userSession ==========================>', userSession);
+    if (!userSession) {
+      router.push('/login');
+      return;
+    } 
+  }, [userSession]);
 
   const formik = useFormik({
     initialValues: {
@@ -39,10 +48,11 @@ function SignupForm() {
     onSubmit: async (values) => {
       try {
         const formData = {
+          providerAccountId: userSession?.providerAccountId,
           email: userSession?.email,
-          providerAcountId: userSession?.providerAcountId,
           ...values,
         };
+        console.log('FORMDATA =================================>:', formData);
         const response = await fetch(
           `http://localhost:${port}/auth/auth0/completeregister`,
           {
@@ -54,11 +64,13 @@ function SignupForm() {
           },
         );
 
-        if (response.status === 201) {
+        if (response.ok) {
           const data = await response.json();
-          console.log('User Information:', data);
-          alert('Te has registrado con éxito');
+          setSession(data.user);
+          setToken(data.token);
+          window.alert('Te has registrado con éxito')
           router.push('/');
+          return;
         } else {
           alert('Error en el registro');
         }

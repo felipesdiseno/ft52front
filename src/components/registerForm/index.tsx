@@ -10,19 +10,20 @@ import { useRouter } from 'next/navigation';
 interface IRegisterUser {
   name: string;
   email: string;
-  adress: string;
+  address: string;
   phone: string;
   password: string;
   confirmPassword: string;
 }
 
 function FormRegister() {
+  const port = process.env.NEXT_PUBLIC_APP_API_PORT;
   const { setToken, setSession } = useAuth(); 
   const router = useRouter(); 
   const [dataNewUser, setDataNewUser] = useState<IRegisterUser>({
     name: '',
     email: '',
-    adress: '',
+    address: '',
     phone: '',
     password: '',
     confirmPassword: '',
@@ -67,7 +68,6 @@ function FormRegister() {
     if (dataNewUser.password !== dataNewUser.confirmPassword) {
       newErrors.confirmPassword = 'Las contraseñas no coinciden.';
     }
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -75,12 +75,8 @@ function FormRegister() {
 
     setLoading(true);
 
-    try {
-      const APIURL = process.env.NEXT_PUBLIC_API_URL_POST_USER;
-
-      console.log('Enviando datos al backend:', dataNewUser);
-      
-      const response = await fetch(`${APIURL}`, {
+     try {
+      const response = await fetch(`http://localhost:${port}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,25 +84,28 @@ function FormRegister() {
         body: JSON.stringify(dataNewUser),
       });
 
-      if (response.status !== 201) {
-        window.alert('Error en la respuesta del servidor');
-        console.log('Error en la respuesta del servidor, status:', response.status);
+      const data = await response.json();
+      console.log("RESULTADO DEL CONDICIONAL DE ESTADO DE USER, DATA.USER",data.user)
+      if(response.ok){
+        window.alert('Registro exitoso')
+        setSession(data.user);
+        setToken(data.token);
+        router.push('/login');
         return;
       }
+      
 
-      const data = await response.json();
-      console.log('Datos enviados exitosamente al backend:', data);
-
-      //setToken(data.token);
-      //setSession(data.user);
-      router.push('/'); 
+      
+      
     } catch (error) {
       console.error('Error al enviar los datos al backend:', error);
-      setErrors({ general: 'Ocurrió un error al registrar el usuario.' });
-    } finally {
+      window.alert('Error al enviar los datos al backend.');
+    }finally {
+      
       setLoading(false);
     }
-  };
+
+  }
 
   return (
     <section className="bg-white">
@@ -187,9 +186,9 @@ function FormRegister() {
                 </label>
                 <input
                   type="text"
-                  id="adress"
-                  name="adress"
-                  value={dataNewUser.adress}
+                  id="address"
+                  name="address"
+                  value={dataNewUser.address}
                   onChange={handleChange}
                   onFocus={handleFocus}
                   placeholder="Ingrese su dirección"
