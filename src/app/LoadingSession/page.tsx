@@ -2,7 +2,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IUserObject {
   providerAccountId: string;
@@ -13,27 +13,25 @@ interface IUserObject {
 }
 
 export default function LoadingSessions() {
+  const port = process.env.NEXT_PUBLIC_APP_API_PORT;
   const { setToken, setSession, userSession } = useAuth();
   const router = useRouter();
-
-  const redirect = useRouter();
   const { data: session, status } = useSession();
-
-  // const [parcial, setparcial] = useState(false);
+  
+  const [hasFetched, setHasFetched] = useState(false); // Estado para controlar la petición
 
   useEffect(() => {
+    // Redirigir si el estado del usuario es 'pending'
     if (userSession?.status === 'pending') {
-      redirect.push('/formpage');
+      router.push('/formpage');
+      return;
     }
+
     if (status === 'loading') return; // Espera a que se cargue la sesión
-    console.log(
-      '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-      status,
-      session,
-    );
-    console.log('@@@@@@@@@@', userSession);
-    if (status === 'authenticated' && session.user) {
-      const userObject = {
+
+    // Asegurarse de que no se haya hecho la petición previamente
+    if (status === 'authenticated' && session.user && !hasFetched) {
+      const userObject: IUserObject = {
         providerAccountId: session.user.providerAccountId || '',
         email: session.user.email || '',
         name: session.user.name || '',
@@ -41,15 +39,17 @@ export default function LoadingSessions() {
         image: session.user.image || '',
       };
       postUserSessionData(userObject);
-    } else {
-      alert('Error en la respuesta del servidor');
+      setHasFetched(true); // Marca que la petición ya se hizo
+    } else if (status !== 'authenticated') {
+      console.log('ERROR EN EL USE EFFECT DE CARGA DE SESION', session, status);
+      alert('ERROR EN EL USE EFFECT DE CARGA DE SESION');
       router.push('/login');
     }
-  }, [session, status, router]);
+  }, [session, status, router, hasFetched]);
 
   const postUserSessionData = async (userObject: IUserObject) => {
     try {
-      const response = await fetch('http://localhost:3005/auth/auth0/signup', {
+      const response = await fetch(`http://localhost:${port}/auth/auth0/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,23 +57,33 @@ export default function LoadingSessions() {
         body: JSON.stringify(userObject),
       });
 
-      if (response.status !== 201) {
-        window.alert('Error en la respuesta del servidor'),
-          redirect.push('/login');
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('ERROR EN LA RESPUESTA DEL SERVIDOR:', errorData);
+        window.alert('ERROR EN LA RESPUESTA DEL SERVIDOR: ' + errorData.message);
+        router.push('/login');
+        return;
       }
 
       const data = await response.json();
-      //console.log('Datos enviados exitosamente al backend.', data);
       setToken(data.token);
       setSession(data.user);
-      console.log('************************', data);
-      // redirect.push('/');
-      // setparcial(true);
+      console.log("RESULTADO DEL CONDICIONAL DE ESTADO DE USER, DATA.USER",data.user)
+      if(data.user.status === 'pending'){
+        router.push('/formpage');
+        return;
+      }
+      console.log("RESULTADO DEL CONDICIONAL DE ESTADO !== A PENDING",data.user.status)
+      router.push('/');
     } catch (error) {
       console.error('Error al enviar los datos al backend:', error);
-      throw error;
+      window.alert('Error al enviar los datos al backend.');
     }
   };
+  
+
+
+
 
   return (
     <div className="flex items-center justify-center w-56 h-56  ">

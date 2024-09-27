@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from 'react-day-picker';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -32,13 +33,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           <ul className="mt-6 space-y-1">
-            <li>
-              <a
-                href="#"
-                className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
-              >
-                General
-              </a>
+            <li className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700">
+              General
             </li>
 
             {/* Eventos Menu */}
@@ -242,6 +238,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </li>
           </ul>
         </div>
+        <button 
+         
+          className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+        >
+          Cerrar sesion
+        </button>
       </div>
 
       <div className="flex-1">{children}</div>

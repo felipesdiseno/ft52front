@@ -20,7 +20,8 @@ function InputEventAd({
   setDescription,
   setPrice,
   setStock,
-}: IInputEventAdProps) {
+}: Partial<IInputEventAdProps>) {
+  const port = process.env.NEXT_PUBLIC_APP_API_PORT;
   const { token, userSession } = useAuth();
   const [image, setImage] = useState<string>('');
   console.log('zzzzzzzzzzzzzz', eventDate);
@@ -84,7 +85,7 @@ function InputEventAd({
         '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@qqqqqq Event data:',
         eventData,
       );
-      const response = await fetch('http://localhost:3005/events', {
+      const response = await fetch(`http://localhost:${port}/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,14 +1,112 @@
-"use client";
+'use client';
 
-import { useSession } from "next-auth/react";
-import Image from "next/image";
+import Image from 'next/image';
+import { useState } from 'react';
+import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
+// Interface para los datos de registro
+interface IRegisterUser {
+  name: string;
+  email: string;
+  adress: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+}
 
 function FormRegister() {
+  const { setToken, setSession } = useAuth(); 
+  const router = useRouter(); 
+  const [dataNewUser, setDataNewUser] = useState<IRegisterUser>({
+    name: '',
+    email: '',
+    adress: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+  });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(false);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setDataNewUser({ ...dataNewUser, [name]: value });
+    setErrors((prev) => ({ ...prev, [name]: '' }));
+  };
 
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = event.target;
+    setErrors((prev) => ({ ...prev, [name]: '' }));
+  };
 
+  const validateEmail = (email: string) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    return passwordPattern.test(password);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const newErrors: { [key: string]: string } = {};
+
+    // Validaciones
+    if (!validateEmail(dataNewUser.email)) {
+      newErrors.email = 'Por favor, ingresa un correo electrónico válido.';
+    }
+    if (!validatePassword(dataNewUser.password)) {
+      newErrors.password =
+        'La contraseña debe contener al menos una mayúscula, una minúscula y un número.';
+    }
+    if (dataNewUser.password !== dataNewUser.confirmPassword) {
+      newErrors.confirmPassword = 'Las contraseñas no coinciden.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const APIURL = process.env.NEXT_PUBLIC_API_URL_POST_USER;
+
+      console.log('Enviando datos al backend:', dataNewUser);
+      
+      const response = await fetch(`${APIURL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataNewUser),
+      });
+
+      if (response.status !== 201) {
+        window.alert('Error en la respuesta del servidor');
+        console.log('Error en la respuesta del servidor, status:', response.status);
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Datos enviados exitosamente al backend:', data);
+
+      //setToken(data.token);
+      //setSession(data.user);
+      router.push('/'); 
+    } catch (error) {
+      console.error('Error al enviar los datos al backend:', error);
+      setErrors({ general: 'Ocurrió un error al registrar el usuario.' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section className="bg-white">
@@ -42,98 +140,150 @@ function FormRegister() {
               "Reconociendonos testigos, ofrecemos nuestros dones a la iglesia".
             </p>
 
-            <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+            <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-6 gap-6">
               <div className="col-span-6">
-                <label
-                  htmlFor="Name"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Nombre
                 </label>
                 <input
                   type="text"
-                  id="Name"
+                  id="name"
                   name="name"
+                  value={dataNewUser.name}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  placeholder="Ingrese su nombre"
                   className="mt-1 w-full p-4 border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-600 opacity-75">{errors.name}</p>
+                )}
               </div>
 
               <div className="col-span-6">
-                <label
-                  htmlFor="Email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Correo electrónico
                 </label>
                 <input
                   type="email"
-                  id="Email"
+                  id="email"
                   name="email"
+                  value={dataNewUser.email}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  placeholder="Ingrese su correo electrónico"
                   className="mt-1 w-full p-4 border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600 opacity-75">{errors.email}</p>
+                )}
               </div>
 
               <div className="col-span-6">
-                <label
-                  htmlFor="PhoneNumber"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Número de Teléfono
-                </label>
-                <input
-                  type="tel"
-                  id="PhoneNumber"
-                  name="phone"
-                  className="mt-1 w-full p-4 border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6">
-                <label
-                  htmlFor="Address"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="adress" className="block text-sm font-medium text-gray-700">
                   Dirección
                 </label>
                 <input
                   type="text"
-                  id="Address"
-                  name="address"
+                  id="adress"
+                  name="adress"
+                  value={dataNewUser.adress}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  placeholder="Ingrese su dirección"
                   className="mt-1 w-full p-4 border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
+                {errors.adress && (
+                  <p className="mt-1 text-sm text-red-600 opacity-75">{errors.adress}</p>
+                )}
               </div>
 
               <div className="col-span-6">
-                <label
-                  htmlFor="Password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Teléfono
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  value={dataNewUser.phone}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  placeholder="Ingrese su teléfono"
+                  className="mt-1 w-full p-4 border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
+                />
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-600 opacity-75">{errors.phone}</p>
+                )}
+              </div>
+
+              <div className="col-span-6">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Contraseña
                 </label>
                 <input
                   type="password"
-                  id="Password"
+                  id="password"
                   name="password"
+                  value={dataNewUser.password}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  placeholder="Ingrese su contraseña"
                   className="mt-1 w-full p-4 border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-600 opacity-75">{errors.password}</p>
+                )}
+              </div>
+
+              <div className="col-span-6">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirmar contraseña
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={dataNewUser.confirmPassword}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  placeholder="Confirma tu contraseña"
+                  className="mt-1 w-full p-4 border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
+                />
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600 opacity-75">{errors.confirmPassword}</p>
+                )}
               </div>
 
               <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                 <button
-                  className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+                  type="submit"
+                  disabled={loading}
+                  className={`inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring ${
+                    loading ? 'cursor-not-allowed' : ''
+                  }`}
                 >
-                  Registrar
+                  {loading ? 'Registrando...' : 'Registrarse'}
                 </button>
 
                 <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                  ¿Ya tienes una cuenta? Puedes iniciar sesión{" "}
-                  <a href="#" className="text-gray-700 underline">
-                    aquí
-                  </a>
-                  .
+                  ¿Ya tienes una cuenta?
+                  <Link href="/login" className="text-gray-700 underline ml-1">
+                    Inicia sesión
+                  </Link>
                 </p>
               </div>
             </form>
+
+            {errors.general && (
+              <p className="mt-4 text-sm text-red-600 opacity-75">{errors.general}</p>
+            )}
           </div>
         </main>
       </div>

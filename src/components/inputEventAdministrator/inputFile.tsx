@@ -3,12 +3,12 @@ import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { InputFileProps } from '@/interfaces/IInputFile';
 
-export function InputFile({ onImageUpload }: InputFileProps) {
+export function InputFile({ onImageUpload }: InputFileProps){
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  ): Promise<void> => {
     const file = event.target.files ? event.target.files[0] : null;
     if (!file) return;
 

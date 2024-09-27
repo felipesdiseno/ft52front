@@ -10,6 +10,7 @@ import { Calendar } from 'lucide-react';
 import Link from 'next/link';
 
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const featuredEvents = [
   {
@@ -44,7 +45,9 @@ const featuredEvents = [
   },
 ];
 
+
 export default function Home() {
+  const redirect = useRouter();
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
@@ -52,7 +55,7 @@ export default function Home() {
   const { token, userSession } = useAuth();
 
   const getEvents = async () => {
-    const response = await fetch('http://localhost:3005/events');
+    const response = await fetch('http://localhost:3003/events');
     if (response.status !== 200) {
       throw new Error('Error fetching events');
     }
@@ -62,6 +65,10 @@ export default function Home() {
     return;
   };
   useEffect(() => {
+    if(userSession?.status === 'pending'){
+      redirect.push('/formpage');
+      return;
+    }
     console.log('USE EFFECT EN HOME "/"', { TOKEN: token, userSession });
     if (events.length === 0) {
       getEvents();

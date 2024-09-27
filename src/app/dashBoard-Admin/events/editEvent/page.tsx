@@ -1,13 +1,14 @@
 'use client';
 import InputEventAd from '@/components/inputEventAdministrator';
 import CardPreview from '@/components/inputEventAdministrator/cardPreview';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 function EditEvent() {
   const [title, setTitle] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [eventLocation, setEventLocation] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState<string | null>(null);
+
   return (
     <div className="flex flex-col">
       <CardPreview
@@ -22,7 +23,7 @@ function EditEvent() {
         eventDate={eventDate}
         eventLocation={eventLocation}
         description={description}
-        image={images}
+        //image={images}
         setTitle={setTitle}
         setEventDate={setEventDate}
         setEventLocation={setEventLocation}

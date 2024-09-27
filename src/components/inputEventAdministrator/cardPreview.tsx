@@ -17,7 +17,7 @@ function CardPreview({
       <div className=" mx-auto flex items-center justify-center">
         <div className="border p-4 rounded-lg shadow-lg max-w-sm">
           <img
-            src={image}
+            src={image || 'https://via.placeholder.com/400'}
             alt={title}
             className="w-full h-48 object-cover rounded-lg"
           />
