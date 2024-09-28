@@ -14,6 +14,8 @@ interface Session {
   providerAccountId: string;
   creatorId: string;
   status: string | undefined;
+  address: string;
+  phone: string;
 }
 
 interface AuthContextType {
@@ -35,19 +37,21 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [userSession, setSession] = useState<Session | null>(null)
-  const [token, setToken] = useState<string | null>(null)
- 
+  const [userSession, setSession] = useState<Session | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+
   useEffect(() => {
-    console.log('useEffect de context')
-  
+    console.log('useEffect de context');
+
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token');
-      const storedSession = JSON.parse(localStorage.getItem('session') || 'null');
-  
+      const storedSession = JSON.parse(
+        localStorage.getItem('userSession') || 'null',
+      );
+
       if (storedToken && storedSession) {
-        setSession(storedSession)
-        setToken(storedToken)
+        setSession(storedSession);
+        setToken(storedToken);
       } else {
         // Si no hay token, limpiar sesión y localStorage
         setSession(null);
@@ -56,7 +60,6 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
       }
     }
   }, []);
-
 
   const handleSetToken = (newToken: string | null) => {
     setToken(newToken);
@@ -102,9 +105,6 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
 };
 
 export default AuthProvider;
-
-
-
 
 /*
 cart, setOnCart: handleNewProduct, randomizer, setRandomizer: handleRandomizer,

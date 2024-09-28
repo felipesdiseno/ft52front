@@ -16,17 +16,17 @@ import { HeartIcon } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 const client = new MercadoPagoConfig({
-  accessToken:
-    'APP_USR-3070431824896779-092618-b54618ee9085c599b72dfc57e22210f7-151488918',
+  accessToken: process.env.NEXT_PUBLIC_MERCADOPAGO_API_KEY as string,
 });
 
-export default function Home() {
-  // const { token, userSession } = useAuth();
+export default function Donation() {
   async function donate(formData: FormData) {
     'use server';
 
     const preference = await new Preference(client).create({
       body: {
+        notification_url:
+          'https://web-ft-52-back.onrender.com/donations/webhook',
         items: [
           {
             id: 'donacion',
@@ -41,22 +41,20 @@ export default function Home() {
     const donationData = {
       amount: Number(formData.get('amount')),
       message: formData.get('message') as string,
-      // creator: userSession?.creatorId,
     };
 
-    await fetch('http://localhost:3003/donations/savedonations', {
+    await fetch('https://web-ft-52-back.onrender.com/donations/savedonations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(donationData),
     });
-
     redirect(preference.sandbox_init_point!);
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b  to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center flex items-center justify-center">
