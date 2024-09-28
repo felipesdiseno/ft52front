@@ -6,6 +6,7 @@ import NavBar from '../components/navBar';
 import Footer from '../components/footer';
 import ShowComponent from '@/components/showComponents';
 import AuthProvider from '@/context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -38,7 +39,11 @@ export default function RootLayout({
               <ShowComponent>
                 <NavBar />
               </ShowComponent>
-              <main className="flex-grow">{children}</main>
+              <main className="flex-grow">
+                {children}
+
+                <Toaster />
+              </main>
               <ShowComponent>
                 <Footer />
               </ShowComponent>

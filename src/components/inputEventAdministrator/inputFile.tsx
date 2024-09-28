@@ -2,8 +2,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { InputFileProps } from '@/interfaces/IInputFile';
-
-export function InputFile({ onImageUpload }: InputFileProps){
+import { toast } from 'react-hot-toast';
+export function InputFile({ onImageUpload }: InputFileProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleImageUpload = async (
@@ -21,6 +21,9 @@ export function InputFile({ onImageUpload }: InputFileProps){
 
     try {
       setLoading(true);
+      const toastId = toast.loading('Cargando imagen, por favor espera...', {
+        position: 'bottom-center',
+      });
       const response = await fetch(
         process.env.NEXT_PUBLIC_CLOUDINARY_API_URL || '',
         {
@@ -28,16 +31,23 @@ export function InputFile({ onImageUpload }: InputFileProps){
           body: formData,
         },
       );
-
       if (response.ok) {
         const data = await response.json();
         const imageUrl = data.secure_url;
         console.log('URL de la imagen:', imageUrl); // Depuración
         onImageUpload(imageUrl); // Envía la URL al componente padre
         setLoading(false);
+        toast.dismiss(toastId);
+        toast.success('Imagen cargada con éxito', {
+          position: 'bottom-center',
+        });
       } else {
         console.error('Error al subir la imagen');
         setLoading(false);
+        toast.dismiss(toastId); // Cerrar toast de carga
+        toast.error('Error al subir la imagen', {
+          position: 'bottom-center',
+        }); // Mostrar toast de error
       }
     } catch (error) {
       console.error('Error en la carga de la imagen:', error);
