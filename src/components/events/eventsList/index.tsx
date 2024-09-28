@@ -26,7 +26,8 @@ function EventsList({ events }: EventsListProps) {
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
       {events.map((event) => (
         <EventCard
-          key={event?.id}
+          id={event.id}
+          key={event.id}
           highlight={event.highlight}
           createDate={event.createDate}
           status={event.status}

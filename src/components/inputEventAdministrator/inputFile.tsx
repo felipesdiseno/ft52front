@@ -2,7 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { InputFileProps } from '@/interfaces/IInputFile';
-import { toast } from 'react-hot-toast';
+
 export function InputFile({ onImageUpload }: InputFileProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -21,9 +21,6 @@ export function InputFile({ onImageUpload }: InputFileProps) {
 
     try {
       setLoading(true);
-      const toastId = toast.loading('Cargando imagen, por favor espera...', {
-        position: 'bottom-center',
-      });
       const response = await fetch(
         process.env.NEXT_PUBLIC_CLOUDINARY_API_URL || '',
         {
@@ -37,21 +34,14 @@ export function InputFile({ onImageUpload }: InputFileProps) {
         console.log('URL de la imagen:', imageUrl); // Depuración
         onImageUpload(imageUrl); // Envía la URL al componente padre
         setLoading(false);
-        toast.dismiss(toastId);
-        toast.success('Imagen cargada con éxito', {
-          position: 'bottom-center',
-        });
       } else {
         console.error('Error al subir la imagen');
         setLoading(false);
-        toast.dismiss(toastId); // Cerrar toast de carga
-        toast.error('Error al subir la imagen', {
-          position: 'bottom-center',
-        }); // Mostrar toast de error
       }
     } catch (error) {
       console.error('Error en la carga de la imagen:', error);
-      setLoading(false);
+    } finally {
+      setLoading(false); // Finaliza la carga
     }
   };
 
@@ -66,7 +56,7 @@ export function InputFile({ onImageUpload }: InputFileProps) {
         onChange={handleImageUpload}
         className="cursor-pointer"
       />
-      {loading ? <h3>Cargando imagen...</h3> : null}
+      {loading && <h3>Cargando imagen...</h3>}
     </div>
   );
 }
