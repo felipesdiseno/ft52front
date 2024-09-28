@@ -16,9 +16,11 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Switch } from '@/components/ui/switch';
+import Link from 'next/link';
 // import { create } from 'domain';
 
 interface EventCardProps {
+  id: string;
   key: string;
   highlight: boolean;
   createDate: Date;
@@ -32,6 +34,7 @@ interface EventCardProps {
 }
 
 const EventCard: React.FC<EventCardProps> = ({
+  id,
   key,
   highlight,
   createDate,
@@ -43,6 +46,8 @@ const EventCard: React.FC<EventCardProps> = ({
   stock,
   images,
 }) => {
+
+  
   console.log('=========================URL de la imagen:', images);
   return (
     <Card className="flex-shrink-0 shadow-md">
@@ -97,9 +102,11 @@ const EventCard: React.FC<EventCardProps> = ({
       <CardFooter className="flex flex-row gap-x-4 items-center justify-center">
         <HoverCard>
           <HoverCardTrigger asChild>
+          <Link href={`/eventdetail/${id}`} passHref>
             <Button className="text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500">
               Ver detalles
             </Button>
+            </Link>
           </HoverCardTrigger>
           <HoverCardContent className="w-80">
             <div className="flex justify-between space-x-4">

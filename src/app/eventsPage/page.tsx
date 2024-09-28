@@ -14,7 +14,7 @@ function EventsPage() {
   const [filteredEvents, setFilteredEvents] = useState([]);
 
   const getEvents = async () => {
-    const response = await fetch('http://localhost:3005/events');
+    const response = await fetch('http://localhost:3003/events');
     if (!response.ok) {
       throw new Error('Error fetching events');
     }

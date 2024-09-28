@@ -3,7 +3,7 @@ import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { InputFileProps } from '@/interfaces/IInputFile';
 
-export function InputFile({ onImageUpload }: InputFileProps){
+export function InputFile({ onImageUpload }: InputFileProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleImageUpload = async (
@@ -20,7 +20,7 @@ export function InputFile({ onImageUpload }: InputFileProps){
     );
 
     try {
-      setLoading(true);
+      setLoading(true); 
       const response = await fetch(
         process.env.NEXT_PUBLIC_CLOUDINARY_API_URL || '',
         {
@@ -32,16 +32,14 @@ export function InputFile({ onImageUpload }: InputFileProps){
       if (response.ok) {
         const data = await response.json();
         const imageUrl = data.secure_url;
-        console.log('URL de la imagen:', imageUrl); // Depuración
-        onImageUpload(imageUrl); // Envía la URL al componente padre
-        setLoading(false);
+        onImageUpload(imageUrl); // Envía la URL de la imagen al componente padre
       } else {
         console.error('Error al subir la imagen');
-        setLoading(false);
       }
     } catch (error) {
       console.error('Error en la carga de la imagen:', error);
-      setLoading(false);
+    } finally {
+      setLoading(false); // Finaliza la carga
     }
   };
 
@@ -56,7 +54,7 @@ export function InputFile({ onImageUpload }: InputFileProps){
         onChange={handleImageUpload}
         className="cursor-pointer"
       />
-      {loading ? <h3>Cargando imagen...</h3> : null}
+      {loading && <h3>Cargando imagen...</h3>}
     </div>
   );
 }
