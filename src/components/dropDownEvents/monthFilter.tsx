@@ -70,15 +70,9 @@ const meses = [
   },
 ];
 
-export function ComboboxDemo({ onMonthSelect }) {
+export function ComboboxDemo() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
-  const handleSelect = (currentValue) => {
-    const newValue = currentValue === value ? '' : currentValue;
-    setValue(newValue);
-    setOpen(false);
-    onMonthSelect(newValue); // Llamar a la función pasada como prop
-  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
