@@ -46,15 +46,15 @@ const upcomingEvents = [
 export default function UserDashboard() {
   const [showDonations, setShowDonations] = useState(false);
   const { userSession } = useAuth()
-  // Placeholder user data
+  
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <Card>
-          <CardHeader className="bg-gradient-to-r from-blue-500 to-green-500 flex justify-between items-center">
-            <CardTitle className="text-3xl font-bold text-white">
-              Mi Perfil
+          <CardHeader className="bg-gradient-to-r from-blue-400 to-green-400 flex justify-between items-center">
+            <CardTitle className="text-3xl font-bold text-white justify-center">
+              {userSession?.name}
             </CardTitle>
             <Avatar className="hover:cursor-pointer">
               <AvatarImage src={userSession?.image} alt="User Image" />
@@ -68,10 +68,8 @@ export default function UserDashboard() {
                 <CardHeader>
                   <CardTitle>Información del Usuario</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p>
-                    <strong>Nombre:</strong> {userSession?.name}
-                  </p>
+                <CardContent >
+                 
                   <p>
                     <strong>Email:</strong> {userSession?.email}
                   </p>
