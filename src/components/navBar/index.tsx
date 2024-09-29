@@ -92,7 +92,7 @@ function NavBar() {
         </div>
         <div className="lg:hidden">
           <FaBars
-            className="w-6 h-6 text-gray-500 cursor-pointer"
+            className="w-6 h-6 text-gray-500 cursor-pointer hover:text-blue-500 transform hover:scale-110 transition duration-300 ease-in-out"
             onClick={handleMenuToggle}
           />
         </div>
@@ -107,19 +107,19 @@ function NavBar() {
           </Link>
           <Link
             href="/aboutUs"
-            className="block py-2 hover:bg-gray-200 text-blue-500 font-bold rounded-md transition duration-300 ease-in-out"
+            className="block py-2 hover:bg-gray-200 text-blue-500 font-light rounded-md transition duration-300 ease-in-out"
           >
             Nuestra comunidad
           </Link>
           <Link
             href="/donations"
-            className="block py-2 hover:bg-gray-200 text-blue-500 font-bold rounded-md transition duration-300 ease-in-out"
+            className="block py-2 hover:bg-gray-200 text-blue-500 font-light rounded-md transition duration-300 ease-in-out"
           >
             Donaciones
           </Link>
           <Link
             href="/events"
-            className="block py-2 hover:bg-gray-200 text-blue-500 font-bold rounded-md transition duration-300 ease-in-out"
+            className="block py-2 hover:bg-gray-200 text-blue-500 font-light rounded-md transition duration-300 ease-in-out"
           >
             Eventos
           </Link>
