@@ -6,7 +6,7 @@ import { InputFile } from './inputFile';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import IInputEventAdProps from '@/interfaces/IInputEventAdProps';
-
+import toast from 'react-hot-toast';
 function InputEventAd({
   title,
   eventDate,
@@ -21,10 +21,12 @@ function InputEventAd({
   setPrice,
   setStock,
 }: Partial<IInputEventAdProps>) {
-const { token, userSession } = useAuth();
+  const { token, userSession } = useAuth();
+
   useEffect(() => {
-    console.log("useEfect de arriba", userSession)
-}),[userSession, token]
+    console.log('useEfect de arriba', userSession);
+  }),
+    [userSession, token];
 
   const port = process.env.NEXT_PUBLIC_APP_API_PORT;
 
@@ -55,7 +57,7 @@ const { token, userSession } = useAuth();
     }
 
     if (!creatorId) {
-      console.log("AcreatorId " , creatorId);
+      console.log('AcreatorId ', creatorId);
       console.error('Se requiere un "creatorId".');
       return;
     }
@@ -103,14 +105,18 @@ const { token, userSession } = useAuth();
       console.log('Respuesta del servidor:', response);
       if (response.status === 201) {
         console.log('Evento creado exitosamente');
-      } else {
+        toast.success('El evento se ha creado exitosamente', {
+          position: 'bottom-center',
+        });
         console.error('Error al crear el evento');
       }
     } catch (error) {
       console.error('Error:', error);
+      toast.error('Ha ocurrido un error al crear el evento', {
+        position: 'bottom-center',
+      });
     }
   };
-
   return (
     <div className="">
       <div className="p-2 space-y-2 ">
