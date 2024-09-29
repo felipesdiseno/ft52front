@@ -171,8 +171,8 @@ const { token, userSession } = useAuth();
         <div className="cursor-pointer">
           <InputFile
             onImageUpload={(imageUrl: string) => {
-              console.log('Imagen subida, URL recibida:', imageUrl); // Depuración
-              setImage(imageUrl); // Actualiza el estado con la URL de la imagen
+              console.log('Imagen subida, URL recibida:', imageUrl); 
+              setImage(imageUrl); 
             }}
           />
         </div>
