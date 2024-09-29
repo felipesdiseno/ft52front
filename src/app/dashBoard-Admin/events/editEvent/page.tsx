@@ -21,7 +21,7 @@ function EditEvent() {
         setEventDate={setEventDate}
         setEventLocation={setEventLocation}
         setDescription={setDescription}
-        setImages={setImages} // Pasa la función para actualizar la imagen
+        setImages={setImages}
       />
     </div>
   );

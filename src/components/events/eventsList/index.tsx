@@ -19,7 +19,7 @@ export type EventsListProps = {
 
 function EventsList({ events }: EventsListProps) {
   if (!Array.isArray(events)) {
-    return <div>No se encontraron eventos.</div>; // Mensaje si no es un array
+    return <div>No se encontraron eventos.</div>;
   }
 
   return (
