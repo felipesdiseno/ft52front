@@ -46,8 +46,6 @@ const EventCard: React.FC<EventCardProps> = ({
   stock,
   images,
 }) => {
-
-  
   console.log('=========================URL de la imagen:', images);
   return (
     <Card className="flex-shrink-0 shadow-md">
@@ -102,10 +100,10 @@ const EventCard: React.FC<EventCardProps> = ({
       <CardFooter className="flex flex-row gap-x-4 items-center justify-center">
         <HoverCard>
           <HoverCardTrigger asChild>
-          <Link href={`/eventdetail/${id}`} passHref>
-            <Button className="text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500">
-              Ver detalles
-            </Button>
+            <Link href={`/eventdetail/${id}`} passHref>
+              <Button className="text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500 transition-colors duration-300">
+                Ver detalles
+              </Button>
             </Link>
           </HoverCardTrigger>
           <HoverCardContent className="w-80">
@@ -119,7 +117,7 @@ const EventCard: React.FC<EventCardProps> = ({
             </div>
           </HoverCardContent>
         </HoverCard>
-        <Button className="bg-blue-500 hover:bg-blue-600">
+        <Button className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300">
           Consigue tu entrada
         </Button>
       </CardFooter>
