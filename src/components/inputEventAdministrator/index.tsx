@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import IInputEventAdProps from '@/interfaces/IInputEventAdProps';
 import toast from 'react-hot-toast';
+
 function InputEventAd({
   title,
   eventDate,
@@ -22,77 +23,50 @@ function InputEventAd({
   setStock,
 }: Partial<IInputEventAdProps>) {
   const { token, userSession } = useAuth();
+  const [image, setImage] = useState<string>(''); // Estado para la imagen
 
   useEffect(() => {
-    console.log('useEfect de arriba', userSession);
-  }),
-    [userSession, token];
+    console.log('useEffect ejecutado con userSession:', userSession);
+  }, [userSession, token]);
 
   const port = process.env.NEXT_PUBLIC_APP_API_PORT;
 
-  const [image, setImage] = useState<string>('');
-  console.log('zzzzzzzzzzzzzz', eventDate);
   const handleSubmit = async () => {
     console.log('@@@@@@@@@@@@@@@', userSession);
     const creatorId = userSession?.creatorId;
-    if (!title) {
-      console.error('El campo "Nombre del evento" es obligatorio.');
-      return;
-    }
-    if (!eventDate) {
-      console.error('El campo "Fecha del evento" es obligatorio.');
-      return;
-    }
-    if (!eventLocation) {
-      console.error('El campo "Ubicación" es obligatorio.');
-      return;
-    }
-    if (!description) {
-      console.error('El campo "Descripción del evento" es obligatorio.');
-      return;
-    }
-    if (!image) {
-      console.error('La imagen es obligatoria.');
+
+    // Validaciones
+    if (!title || !eventDate || !eventLocation || !description || !image) {
+      console.error('Todos los campos son obligatorios.');
+      toast.error('Todos los campos son obligatorios.', {
+        position: 'bottom-center',
+      });
       return;
     }
 
     if (!creatorId) {
-      console.log('AcreatorId ', creatorId);
       console.error('Se requiere un "creatorId".');
+      toast.error('Se requiere autenticación para crear un evento.', {
+        position: 'bottom-center',
+      });
       return;
     }
-    if (
-      !title ||
-      !eventDate ||
-      !eventLocation ||
-      !description ||
-      !image ||
-      !creatorId
-    ) {
-      console.error(
-        'Todos los campos son obligatorios y se requiere autenticación.',
-      );
-      return;
-    }
-    const cleanedDateString = eventDate.replace(/(\d+)(th|st|nd|rd)/, '$1');
 
+    const cleanedDateString = eventDate.replace(/(\d+)(th|st|nd|rd)/, '$1');
     const eventDateConverted = new Date(cleanedDateString);
+
     const eventData = {
-      title: title,
-      description: description,
+      title,
+      description,
       eventDate: eventDateConverted,
-      eventLocation: eventLocation,
+      eventLocation,
       images: [image],
       stock: stock || 0,
       price: price || 0,
-      creator: userSession?.creatorId,
+      creator: creatorId,
     };
 
     try {
-      console.log(
-        '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@qqqqqq Event data:',
-        eventData,
-      );
       const response = await fetch(`http://localhost:${port}/events`, {
         method: 'POST',
         headers: {
@@ -103,12 +77,17 @@ function InputEventAd({
       });
 
       console.log('Respuesta del servidor:', response);
+
       if (response.status === 201) {
         console.log('Evento creado exitosamente');
         toast.success('El evento se ha creado exitosamente', {
           position: 'bottom-center',
         });
+      } else {
         console.error('Error al crear el evento');
+        toast.error('Error al crear el evento', {
+          position: 'bottom-center',
+        });
       }
     } catch (error) {
       console.error('Error:', error);
@@ -117,72 +96,86 @@ function InputEventAd({
       });
     }
   };
+
   return (
-    <div className="">
-      <div className="p-2 space-y-2 ">
-        <h1 className="font-bold text-[28px] text-gray-500 mb-4">
-          Crear evento:
-        </h1>
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-col">
-            <p className="text-white">Capacidad:</p>
+    <div className="p-4 space-y-4">
+      <h1 className="font-bold text-[28px] text-gray-500 mb-4">
+        Crear evento:
+      </h1>
+
+      <div className="flex flex-row gap-8">
+        <div className="w-1/2">
+          <div className="flex flex-col gap-4">
             <Input
               type="text"
               placeholder="Nombre del evento"
-              className="w-auto bg-white"
-              onChange={(e) => setTitle(e.target.value)}
+              className="bg-white"
+              onChange={(e) => setTitle!(e.target.value)}
             />
-            <p className="text-white">Capacidad:</p>
-
-            <DatePickerDemo onChange={(date: string) => setEventDate(date)} />
-          </div>
-          <div className="flex flex-col  items">
-            <p className="text-white">Capacidad:</p>
-
+            <DatePickerDemo onChange={(date: string) => setEventDate!(date)} />
             <Input
               type="text"
               placeholder="Ubicación"
-              className="w-auto bg-white"
-              onChange={(e) => setEventLocation(e.target.value)}
+              className="bg-white"
+              onChange={(e) => setEventLocation!(e.target.value)}
             />
-            <p className="text-white">Capacidad:</p>
-
             <Input
               type="text"
               placeholder="Descripción del evento"
-              className="w-[280px] bg-white"
-              onChange={(e) => setDescription(e.target.value)}
+              className="bg-white"
+              onChange={(e) => setDescription!(e.target.value)}
             />
-          </div>
-          <div className="flex flex-col">
-            <p className="text-gray-500">Costo:</p>
             <Input
               type="number"
               placeholder="Costo del evento"
-              className="w-[280px] bg-white"
+              className="bg-white"
               defaultValue={0}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => setPrice!(e.target.value)}
             />
-            <p className="text-gray-500">Capacidad:</p>
-
             <Input
               type="number"
-              placeholder="¿Cuantas personas pueden asistir?"
+              placeholder="Capacidad de asistentes"
               defaultValue={0}
-              className="w-[280px] bg-white"
-              onChange={(e) => setStock(e.target.value)}
+              className="bg-white"
+              onChange={(e) => setStock!(e.target.value)}
+            />
+
+            <InputFile
+              onImageUpload={(imageUrl: string) => {
+                setImage(imageUrl);
+              }}
             />
           </div>
         </div>
-        <div className="cursor-pointer">
-          <InputFile
-            onImageUpload={(imageUrl: string) => {
-              console.log('Imagen subida, URL recibida:', imageUrl); // Depuración
-              setImage(imageUrl); // Actualiza el estado con la URL de la imagen
-            }}
-          />
+
+        <div className="w-1/2">
+          <h2 className="font-bold text-[24px] text-gray-500 mb-2">
+            Previsualización:
+          </h2>
+          <div className="border p-4 rounded-lg shadow-lg max-w-sm">
+            <img
+              src={image || 'https://via.placeholder.com/400'}
+              alt={title}
+              className="w-full h-48 object-contain rounded-lg"
+            />
+            <div className="p-4">
+              <h2 className="font-bold text-xl mb-2">
+                {title || 'Nombre del evento'}
+              </h2>
+              <p className="text-gray-700">
+                {eventDate || 'Fecha no definida'}
+              </p>
+              <p className="text-gray-700">
+                {eventLocation || 'Ubicación no definida'}
+              </p>
+              <p className="text-gray-600 mt-2">
+                {description || 'Descripción no disponible'}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+
       <div className="flex justify-end gap-2">
         <Button className="bg-transparent text-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:text-white">
           Cancelar
