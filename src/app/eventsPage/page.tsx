@@ -1,39 +1,52 @@
 'use client';
 import { ComboboxDemo } from '@/components/dropDownEvents/monthFilter';
-
 import { ComboboxDemoYear } from '@/components/dropDownEvents/yearFilter';
 import EventsList from '@/components/events/eventsList';
-// import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
+import EventAlert from '@/components/events/eventAlert';
 function EventsPage() {
   const [events, setEvents] = useState([]);
   const [search, setSearch] = useState('');
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(''); // Estado para el mes seleccionado
+  const [selectedYear, setSelectedYear] = useState(''); // Estado para el año seleccionado
 
-  const getEvents = async () => {
-    const response = await fetch('http://localhost:3003/events');
-    if (!response.ok) {
-      throw new Error('Error fetching events');
+  // Función para obtener eventos del backend con filtros por mes y año
+  const getEvents = async (month = '', year = '') => {
+    try {
+      let url = 'http://localhost:3003/events';
+
+      // Agregar filtros a la URL si hay mes o año seleccionados
+      if (month || year) {
+        const params = new URLSearchParams();
+        if (month) params.append('month', month);
+        if (year) params.append('year', year);
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Error fetching events');
+      }
+
+      const data = await response.json();
+      console.log('Data received:', data);
+      setEvents(data.events);
+      setFilteredEvents(data.events);
+    } catch (error) {
+      console.error('Error fetching events:', error);
     }
-    const data = await response.json();
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', data);
-    setEvents(data.events);
-    setFilteredEvents(data.events);
   };
-  useEffect(() => {
-    if (events.length === 0) {
-      getEvents();
-    }
-    console.log('USE EFFECT EN HOME DE EVENTOS "/"', events);
-  }),
-    [events];
-  // Función para aplicar los filtros
 
+  // useEffect para cargar los eventos la primera vez o cuando cambian mes/año
+  useEffect(() => {
+    getEvents(selectedMonth, selectedYear); // Llamar a getEvents con los valores de mes y año
+  }, [selectedMonth, selectedYear]);
+
+  // Función para manejar la búsqueda por título
   const handleSearch = (e) => {
-    console.log(e.target.value);
     const value = e.target.value;
     setSearch(value);
     if (value.length > 1) {
@@ -45,34 +58,59 @@ function EventsPage() {
       setFilteredEvents(events); // Reiniciar a todos los eventos si la búsqueda está vacía
     }
   };
+  const clearFilters = () => {
+    setSelectedMonth('');
+    setSelectedYear('');
+    setSearch('');
+    setFilteredEvents(events); // Restablecer la lista de eventos filtrados
+  };
+  const hasFilters = selectedMonth || selectedYear || search;
   return (
     <div className="w-full">
       <div className="container mx-auto flex flex-col mt-4 ">
         <h1 className="text-3xl mt-4 font-bold">
           Participa de nuestros eventos:
         </h1>
-        <div className="flex flex-row gap-2  justify-start mt-4">
-          <div className="flex flex-row gap-6 ">
-            <ComboboxDemo />
-            <ComboboxDemoYear />
+        <div className="flex flex-row gap-2 justify-start mt-4">
+          <div className="flex flex-row gap-6">
+            <ComboboxDemo onChange={setSelectedMonth} />
+            <ComboboxDemoYear onChange={setSelectedYear} />
             <div className="flex w-auto max-w-sm items-center space-x-2">
               <Input
                 type="text"
-                placeholder=""
+                placeholder="Buscar eventos"
                 value={search}
                 onChange={handleSearch}
               />
-              <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
+              <Button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300"
+              >
                 Buscar
               </Button>
+              {hasFilters && (
+                <Button
+                  onClick={clearFilters}
+                  className="border bg-transparent text-red-500 border-red-500 hover:bg-red-500 hover:text-white transition-colors duration-300"
+                >
+                  Limpiar filtros
+                </Button>
+              )}
             </div>
           </div>
         </div>
         <div className="mt-4 mb-6">
-          <EventsList events={filteredEvents} />
+          {filteredEvents.length === 0 ? (
+            <div className="flex justify-center items-center mt-6 ">
+              <EventAlert />
+            </div>
+          ) : (
+            <EventsList events={filteredEvents} />
+          )}
         </div>
       </div>
     </div>
   );
 }
+
 export default EventsPage;

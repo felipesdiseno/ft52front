@@ -20,59 +20,31 @@ import {
 } from '@/components/ui/popover';
 
 const meses = [
-  {
-    value: 'Enero',
-    label: 'Enero',
-  },
-  {
-    value: 'Febrero',
-    label: 'Febrero',
-  },
-  {
-    value: 'Marzo',
-    label: 'Marzo',
-  },
-  {
-    value: 'Abril',
-    label: 'Abril',
-  },
-  {
-    value: 'Mayo',
-    label: 'Mayo',
-  },
-  {
-    value: 'Junio',
-    label: 'Junio',
-  },
-  {
-    value: 'Julio',
-    label: 'Julio',
-  },
-  {
-    value: 'Agosto',
-    label: 'Agosto',
-  },
-  {
-    value: 'Septiembre',
-    label: 'Septiembre',
-  },
-  {
-    value: 'Octubre',
-    label: 'Octubre',
-  },
-  {
-    value: 'Noviembre',
-    label: 'Noviembre',
-  },
-  {
-    value: 'Diciembre',
-    label: 'Diciembre',
-  },
+  { value: '01', label: 'Enero' },
+  { value: '02', label: 'Febrero' },
+  { value: '03', label: 'Marzo' },
+  { value: '04', label: 'Abril' },
+  { value: '05', label: 'Mayo' },
+  { value: '06', label: 'Junio' },
+  { value: '07', label: 'Julio' },
+  { value: '08', label: 'Agosto' },
+  { value: '09', label: 'Septiembre' },
+  { value: '10', label: 'Octubre' },
+  { value: '11', label: 'Noviembre' },
+  { value: '12', label: 'Diciembre' },
 ];
 
-export function ComboboxDemo() {
+export function ComboboxDemo({ onChange }) {
+  // Asegúrate de que onChange se pase como prop
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
+
+  const handleSelect = (currentValue) => {
+    const newValue = currentValue === value ? '' : currentValue;
+    setValue(newValue);
+    onChange(newValue); // Llamamos a onChange con el mes seleccionado
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -84,33 +56,30 @@ export function ComboboxDemo() {
           className="w-[200px] justify-between"
         >
           {value
-            ? meses.find((framework) => framework.value === value)?.label
+            ? meses.find((mes) => mes.value === value)?.label
             : 'Filtrar por mes...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Buscar mes..." />
           <CommandList>
             <CommandEmpty>Mes no encontrado.</CommandEmpty>
             <CommandGroup>
-              {meses.map((framework) => (
+              {meses.map((mes) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue);
-                    setOpen(false);
-                  }}
+                  key={mes.value}
+                  value={mes.value}
+                  onSelect={() => handleSelect(mes.value)} // Asegúrate de que se llame handleSelect
                 >
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      value === framework.value ? 'opacity-100' : 'opacity-0',
+                      value === mes.value ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  {framework.label}
+                  {mes.label}
                 </CommandItem>
               ))}
             </CommandGroup>
