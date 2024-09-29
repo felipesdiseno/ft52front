@@ -127,7 +127,7 @@ export default function UserDashboard() {
                   <CardContent>
                     <Table>
                       <TableHeader>
-                        <TableRow>
+                        <TableRow className="text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors duration-300 curor-pointer">
                           <TableHead>Aporte</TableHead>
                           <TableHead>Estado</TableHead>
                           <TableHead>Total</TableHead>
