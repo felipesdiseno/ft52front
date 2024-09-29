@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Provider } from '@/components/provider';
 import { use, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
+import toast from 'react-hot-toast';
 function SignupForm() {
   const port = process.env.NEXT_PUBLIC_APP_API_PORT;
   const router = useRouter();
@@ -72,7 +72,9 @@ function SignupForm() {
           const data = await response.json();
           setSession(data.user);
           setToken(data.token);
-          window.alert('Te has registrado con éxito');
+          toast.success('Te has registrado exitosamente', {
+            position: 'bottom-center',
+          });
           router.push('/');
           return;
         } else {
@@ -80,7 +82,9 @@ function SignupForm() {
         }
       } catch (error) {
         console.error('Error:', error);
-        alert('Error en el registro');
+        toast.error('Error en el registro', {
+          position: 'bottom-center',
+        });
       }
     },
   });
@@ -88,14 +92,14 @@ function SignupForm() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md">
-        <div className="mb-6 text-center">
-          <div className="mb-4 justify-center">
-            <Avatar className="hover:cursor-pointer">
+        <div className="mb-4 text-center">
+          <div className="mb-4  flex justify-center mx-auto">
+            <Avatar className="hover:cursor-pointer w-20 h-20">
               <AvatarImage src={userSession?.image || ''} alt="Avatar" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
-          <h2 className="text-2xl font-bold text-blue-600 mb-2">
+          <h2 className="text-2xl font-bold text-blue-600 ">
             Bienvenido, {userSession?.name}!
           </h2>
           <p className="text-gray-600">
@@ -104,7 +108,7 @@ function SignupForm() {
         </div>
 
         <form onSubmit={formik.handleSubmit}>
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               className="block text-blue-600 text-sm font-bold mb-2"
               htmlFor="password"
@@ -128,7 +132,7 @@ function SignupForm() {
             ) : null}
           </div>
 
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               className="block text-blue-600 text-sm font-bold mb-2"
               htmlFor="confirmPassword"
@@ -152,7 +156,7 @@ function SignupForm() {
             ) : null}
           </div>
 
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               className="block text-blue-600 text-sm font-bold mb-2"
               htmlFor="phone"
@@ -176,7 +180,7 @@ function SignupForm() {
             ) : null}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-4">
             <label
               className="block text-blue-600 text-sm font-bold mb-2"
               htmlFor="address"
