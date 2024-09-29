@@ -187,6 +187,12 @@ function LoginForm() {
               </Link>
               .
             </p>
+            <Link
+                  href="/"
+                  className="text-gray-700 font-bold hover:underline hover:text-blue-500 ml-1 "
+                >
+                  Ir a inicio
+                </Link>
           </div>
         </div>
       </div>

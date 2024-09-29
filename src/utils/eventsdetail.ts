@@ -13,7 +13,7 @@ interface Event {
 }
 
 interface EventResponse {
-  events: Event[]; // Cambiar a array de Event
+  events: Event[]; 
   totalElements: number;
   page: number;
   limit: number;
