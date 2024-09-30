@@ -26,6 +26,7 @@ export default async function getEventById(id: string) {
     }
 
     const event: Event = await res.json();  
+    return event
   } catch (error) {
     console.error('Error al obtener el evento por ID:', error);
     return null;
