@@ -1,6 +1,7 @@
 'use client';
 
 interface EventCardProps {
+  id: string;
   highlight: boolean;
   createDate: Date;
   status: string;
@@ -14,6 +15,7 @@ interface EventCardProps {
 }
 
 const EventCardDetail: React.FC<EventCardProps> = ({
+  id,
   images = [],
   title,
   status,
@@ -22,7 +24,10 @@ const EventCardDetail: React.FC<EventCardProps> = ({
   stock,
   price,
   description,
+
 }) => {
+
+  console.log ("id que recibo", id)
   return (
     <aside className="bg-white shadow-md rounded-lg flex flex-col md:flex-row w-full max-w-4xl mx-auto my-6 md:ml-4 md:max-w-6xl">
       <div className="w-full md:w-2/5">

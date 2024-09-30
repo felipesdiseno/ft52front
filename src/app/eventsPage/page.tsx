@@ -10,15 +10,13 @@ function EventsPage() {
   const [events, setEvents] = useState([]);
   const [search, setSearch] = useState('');
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState(''); // Estado para el mes seleccionado
-  const [selectedYear, setSelectedYear] = useState(''); // Estado para el año seleccionado
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
 
-  // Función para obtener eventos del backend con filtros por mes y año
   const getEvents = async (month = '', year = '') => {
     try {
       let url = 'http://localhost:3003/events';
 
-      // Agregar filtros a la URL si hay mes o año seleccionados
       if (month || year) {
         const params = new URLSearchParams();
         if (month) params.append('month', month);
