@@ -14,47 +14,35 @@ import {
 } from '@/components/ui/card';
 import { HeartIcon } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { donate } from '@/app/donations/mercadoPago';
 
-const client = new MercadoPagoConfig({
-  accessToken: process.env.NEXT_PUBLIC_MERCADOPAGO_API_KEY as string,
-});
-
-export default function Donation() {
-  async function donate(formData: FormData) {
-    'use server';
-
-    const preference = await new Preference(client).create({
-      body: {
-        notification_url:
-          'https://web-ft-52-back.onrender.com/donations/webhook',
-        items: [
-          {
-            id: 'donacion',
-            title: formData.get('message') as string,
-            quantity: 1,
-            unit_price: Number(formData.get('amount')),
-          },
-        ],
-      },
-    });
+export default function Home() {
+  const { token, userSession } = useAuth();
+  const donateFunction = donate;
+  async function donation(formData: FormData) {
+    const title = formData.get('message') as string;
+    const amount = Number(formData.get('amount'));
 
     const donationData = {
-      amount: Number(formData.get('amount')),
-      message: formData.get('message') as string,
+      amount,
+      title,
+      creator: userSession?.creatorId,
     };
 
-    await fetch('https://web-ft-52-back.onrender.com/donations/savedonations', {
+    await fetch('http://localhost:3003/donations/savedonations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(donationData),
     });
-    redirect(preference.sandbox_init_point!);
+
+    donateFunction({ title, amount });
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b  to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center flex items-center justify-center">
@@ -66,7 +54,7 @@ export default function Donation() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={donate} className="space-y-4">
+          <form action={donation} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-sm font-medium">
                 Monto de la Donación
