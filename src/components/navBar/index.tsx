@@ -68,7 +68,7 @@ function NavBar() {
           </Link>
           <div className="relative">
             {(userSession?.image && (
-              <Avatar className="hover:cursor-pointer">
+              <Avatar className="hover:cursor-pointer transition duration-300 ease-in-out">
                 <AvatarImage
                   src={userSession?.image}
                   onClick={handleDropDownMenu}
