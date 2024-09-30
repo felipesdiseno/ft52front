@@ -15,7 +15,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/context/AuthContext';
 
-
 const aportes = [
   {
     aporte: 'Donación',
@@ -45,31 +44,33 @@ const upcomingEvents = [
 
 export default function UserDashboard() {
   const [showDonations, setShowDonations] = useState(false);
-  const { userSession } = useAuth()
+  const { userSession } = useAuth();
   
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-7xl mx-auto">
-        <Card>
-          <CardHeader className="bg-gradient-to-r from-blue-400 to-green-400 flex justify-between items-center">
-            <CardTitle className="text-3xl font-bold text-white justify-center">
-              {userSession?.name}
-            </CardTitle>
-            <Avatar className="hover:cursor-pointer">
+        <Card className="shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-blue-500 to-green-500 flex justify-between items-center rounded-t-xl">
+            <Avatar className=" w-16 h-16 shadow-xl">
               <AvatarImage src={userSession?.image} alt="User Image" />
               <AvatarFallback>{userSession?.image}</AvatarFallback>
             </Avatar>
+            <CardTitle className="text-3xl font-bold text-white cursor-default">
+              Mi Perfil
+            </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-6 rounded-b-xl shadow-xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* User Information Section */}
-              <Card>
+              <Card className="shadow-md">
                 <CardHeader>
                   <CardTitle>Información del Usuario</CardTitle>
                 </CardHeader>
-                <CardContent >
-                 
+                <CardContent className="cursor-default">
+                  <p>
+                    <strong>Nombre:</strong> {userSession?.name}
+                  </p>
                   <p>
                     <strong>Email:</strong> {userSession?.email}
                   </p>
@@ -83,11 +84,13 @@ export default function UserDashboard() {
               </Card>
 
               {/* Upcoming Events Section */}
-              <Card>
+              <Card className="shadow-md">
                 <CardHeader>
-                  <CardTitle>Próximos Eventos</CardTitle>
+                  <CardTitle className="cursor-default">
+                    Próximos Eventos
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="cursor-default">
                   <ul className="space-y-2">
                     {upcomingEvents.map((event) => (
                       <li
@@ -109,7 +112,7 @@ export default function UserDashboard() {
             <div className="mt-8">
               <Button
                 onClick={() => setShowDonations(!showDonations)}
-                className="w-full justify-between"
+                className="w-full justify-between text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors duration-300 curor-pointer "
                 variant="outline"
               >
                 <span>Historial de Donaciones</span>
@@ -124,7 +127,7 @@ export default function UserDashboard() {
                   <CardContent>
                     <Table>
                       <TableHeader>
-                        <TableRow>
+                        <TableRow className="text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors duration-300 curor-pointer">
                           <TableHead>Aporte</TableHead>
                           <TableHead>Estado</TableHead>
                           <TableHead>Total</TableHead>

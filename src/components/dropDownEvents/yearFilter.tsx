@@ -28,9 +28,16 @@ const year = [
     value: '2025',
     label: '2025',
   },
+  {
+    value: '2026',
+    label: '2026',
+  },
 ];
+interface ComboboxDemoYearProps {
+  onChange: (year: string) => void;
+}
 
-export function ComboboxDemoYear() {
+export function ComboboxDemoYear({ onChange }: ComboboxDemoYearProps) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
 
@@ -38,39 +45,41 @@ export function ComboboxDemoYear() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant='outline'
-          role='combobox'
+          variant="outline"
+          role="combobox"
           aria-expanded={open}
-          className='w-[200px] justify-between'
+          className="w-[200px] justify-between"
         >
           {value
-            ? year.find((framework) => framework.value === value)?.label
+            ? year.find((option) => option.value === value)?.label
             : 'Filtrar por Año...'}
-          <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[200px] p-0'>
+      <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder='Search framework...' />
+          <CommandInput placeholder="Search framework..." />
           <CommandList>
             <CommandEmpty>Año no encontrado.</CommandEmpty>
             <CommandGroup>
-              {year.map((framework) => (
+              {year.map((option) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={option.value}
+                  value={option.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue);
+                    const newValue = currentValue === value ? '' : currentValue;
+                    setValue(newValue);
+                    onChange(newValue);
                     setOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      value === framework.value ? 'opacity-100' : 'opacity-0',
+                      value === option.value ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  {framework.label}
+                  {option.label}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -23,7 +23,7 @@ function InputEventAd({
   setStock,
 }: Partial<IInputEventAdProps>) {
   const { token, userSession } = useAuth();
-  const [image, setImage] = useState<string>(''); // Estado para la imagen
+  const [image, setImage] = useState<string>('');
 
   useEffect(() => {
     console.log('useEffect ejecutado con userSession:', userSession);

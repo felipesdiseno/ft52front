@@ -1,4 +1,6 @@
-// Asegúrate de que la ruta sea correcta
+'use client';
+
+import { useEffect, useState } from 'react';
 import EventCardDetail from '@/components/eventDetail/indext';
 import getEventById from '@/utils/eventsdetail';
 
@@ -16,19 +18,29 @@ interface Event {
   images: string[];
 }
 
-const EventDetailPage = async ({ params }: { params: { id: string } }) => {
-  try {
-    const event: Event | null = await getEventById(params.id); // Cambiar a Event
+const EventDetailPage = ({ params }: { params: { id: string } }) => {
+  const [event, setEvent] = useState<Event | null>(null);
 
-    if (!event) {
-      return <div>Evento no disponible</div>;
-    }
-    return <EventCardDetail {...event} />; // Pasar directamente las propiedades de event
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const fetchedEvent = await getEventById(params.id);
+        setEvent(fetchedEvent);
+      } catch (error) {
+        console.error('Error fetching event:', error);
+      }
+    };
 
-  } catch (error) {
-    console.error("Error", error);
-    return <div>Ha ocurrido un error al cargar el evento</div>;
+    fetchEvent();
+  }, [params.id]);
+
+  console.log('id del evento', params.id);
+
+  if (!event) {
+    return <div>Evento no disponible</div>; // Mensaje si el evento no se encuentra
   }
+
+  return <EventCardDetail {...event} />;
 };
 
 export default EventDetailPage;

@@ -17,7 +17,9 @@ import {
 } from '@/components/ui/hover-card';
 import { Switch } from '@/components/ui/switch';
 import Link from 'next/link';
-// import { create } from 'domain';
+
+import getEventById from '@/utils/eventsdetail'; // Asegúrate de que esta función esté bien definida.
+import { useRouter } from 'next/navigation';
 
 interface EventCardProps {
   id: string;
@@ -46,15 +48,18 @@ const EventCard: React.FC<EventCardProps> = ({
   stock,
   images,
 }) => {
+  const router = useRouter();
 
-  
-  console.log('=========================URL de la imagen:', images);
+  const handleViewDetails = () => {
+    
+    router.push(`/eventdetail/${id}`);
+  };
+
   return (
     <Card className="flex-shrink-0 shadow-md">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle>{title}</CardTitle>
-
           <div className="flex items-center border rounded-full p-1">
             <span className="text-sm mr-2 text-gray-400">Destacar</span>
             <Switch
@@ -81,7 +86,7 @@ const EventCard: React.FC<EventCardProps> = ({
             </p>
           </div>
           <div
-            className="ml-4 flex justify-center  "
+            className="ml-4 flex justify-center"
             style={{ height: '180px', width: '180px' }}
           >
             {images ? (
@@ -102,28 +107,21 @@ const EventCard: React.FC<EventCardProps> = ({
       <CardFooter className="flex flex-row gap-x-4 items-center justify-center">
         <HoverCard>
           <HoverCardTrigger asChild>
-          <Link href={`/eventdetail/${id}`} passHref>
-            <Button className="text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500">
+            <Button
+              className="text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white border border-blue-500 transition-colors duration-300"
+              onClick={handleViewDetails} 
+            >
               Ver detalles
             </Button>
-            </Link>
           </HoverCardTrigger>
-          <HoverCardContent className="w-80">
-            <div className="flex justify-between space-x-4">
-              <div className="space-y-1">
-                <h4 className="text-sm font-semibold">{title}</h4>
-                <p className="text-sm">
-                  Este evento sera al aire libre, traer para compartir
-                </p>
-              </div>
-            </div>
-          </HoverCardContent>
+         
         </HoverCard>
-        <Button className="bg-blue-500 hover:bg-blue-600">
+        <Button className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300">
           Consigue tu entrada
         </Button>
       </CardFooter>
     </Card>
   );
 };
-export default EventCard;
+
+export default EventCard;  
