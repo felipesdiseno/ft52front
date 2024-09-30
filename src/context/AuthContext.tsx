@@ -5,7 +5,11 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 interface AuthContextProps {
   children: React.ReactNode;
 }
-
+interface Donation {
+  title: string;
+  amount: number;
+  date: string;
+}
 interface Session {
   id: string;
   name: string;
@@ -16,6 +20,7 @@ interface Session {
   status: string | undefined;
   phone: string | undefined;
   address: string | undefined;
+  donations: Donation[];
 }
 
 interface AuthContextType {
@@ -23,6 +28,7 @@ interface AuthContextType {
   userSession: Session | null;
   setToken: (token: string | null) => void;
   setSession: (userSession: Session | null) => void;
+  setDonation: (donation: Donation) => void;
   logout: () => void;
 }
 
@@ -31,6 +37,7 @@ const AuthContext = createContext<AuthContextType>({
   userSession: null,
   setToken: () => {},
   setSession: () => {},
+  setDonation: () => {},
   logout: () => {},
 });
 
@@ -43,6 +50,8 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
   useEffect(() => {
     console.log('useEffect de context');
 
+    console.log('useEffect de context');
+
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token');
       const storedSession = JSON.parse(
@@ -53,12 +62,19 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
         setSession(storedSession);
         setToken(storedToken);
       } else {
+        // Si no hay token, limpiar sesiÃ³n y localStorage
         setSession(null);
         localStorage.removeItem('userSession');
         setToken(null);
       }
     }
   }, []);
+
+  const handleSetDonations = (user: any) => {
+    if (user.donation.length > 0) {
+      userSession?.donations.push(user.donation);
+    }
+  };
 
   const handleSetToken = (newToken: string | null) => {
     setToken(newToken);
@@ -95,6 +111,7 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
         setToken: handleSetToken,
         userSession,
         setSession: handleUserData,
+        setDonation: handleSetDonations,
         logout,
       }}
     >
@@ -104,10 +121,3 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
 };
 
 export default AuthProvider;
-
-/*
-cart, setOnCart: handleNewProduct, randomizer, setRandomizer: handleRandomizer,
-
-setRemoveProduct: handleRemoveProduct, wishlist, setOnWishList: handleNewWishProduct, setRemoveWishList: handleRemoveWishProduct, clearCart: clearCart
-
-*/

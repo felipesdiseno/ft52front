@@ -53,8 +53,18 @@ function LoginForm() {
           );
           route.push('/login');
           return;
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('ERROR EN LA RESPUESTA DEL SERVIDOR:', errorData);
+          window.alert(
+            'ERROR EN LA RESPUESTA DEL SERVIDOR: ' + errorData.message,
+          );
+          route.push('/login');
+          return;
         }
 
+        const data = await response.json();
+        if (data.redirect === true) {
         const data = await response.json();
         if (data.redirect === true) {
           window.alert(
@@ -62,10 +72,15 @@ function LoginForm() {
           );
           handleClickGoogle();
           return;
+          return;
         }
 
         setSession(data.user);
+        setSession(data.user);
         setToken(data.token);
+        window.alert('has iniciado sesion exitosamente');
+        route.push('/');
+        return;
         window.alert('has iniciado sesion exitosamente');
         route.push('/');
         return;

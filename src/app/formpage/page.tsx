@@ -12,7 +12,12 @@ function SignupForm() {
   const router = useRouter();
   const { userSession, setSession, setToken } = useAuth();
 
+
   useEffect(() => {
+    console.log(
+      'USEEFFECT, userSession ==========================>',
+      userSession,
+    );
     console.log(
       'USEEFFECT, userSession ==========================>',
       userSession,
@@ -20,6 +25,7 @@ function SignupForm() {
     if (!userSession) {
       router.push('/login');
       return;
+    }
     }
   }, [userSession]);
 
@@ -204,6 +210,16 @@ function SignupForm() {
             ) : null}
           </div>
 
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            >
+              Completar Registro
+            </button>
+          </div>
+        </form>
+      </div>
           <div className="flex items-center justify-between">
             <button
               type="submit"
